@@ -2,7 +2,7 @@
 """
 Created on Tue Apr 15 06:34:58 2025
 
-@author: israt
+@author: Daivd093
 """
 
 import time
