@@ -2,7 +2,7 @@
 """
 Editor de Spyder
 
-@author: israt
+@author: Daivd093
 
 Este archivo está basado en la implementación de raimasen1729
 https://github.com/raimasen1729/Finger-Flexion-Detection-Using-ECoG-Signal/tree/main
@@ -35,8 +35,15 @@ except FileExistsError:
 
 import logging
 
+
+# Limpiar handlers anteriores
+for handler in logging.root.handlers[:]:
+    logging.root.removeHandler(handler)
+
+
+logfile = logdir+'entrenamiento_ecog_info.log'
 logging.basicConfig(
-    filename=logdir+'entrenamiento_ecog_info.log',     # nombre del archivo de log
+    filename=logfile,     # nombre del archivo de log
     level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
     filemode='w'  # o 'a' para agregar sin sobrescribir
@@ -44,6 +51,7 @@ logging.basicConfig(
 
 logging.info("======================Inicio======================")
 
+print(logfile)
 import sys
 logging.info(f'Python {sys.version.split()[0]}')
 
