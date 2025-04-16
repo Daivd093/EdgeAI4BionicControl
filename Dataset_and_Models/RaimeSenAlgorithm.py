@@ -24,10 +24,19 @@ START_TIME = time.time()
 import warnings
 warnings.filterwarnings("error", category=RuntimeWarning)
 
+
+
+import os
+logdir = 'logs/'
+try:
+    os.mkdir(logdir)
+except FileExistsError:
+    pass  # ya existe, no pasa nada
+
 import logging
 
 logging.basicConfig(
-    filename='entrenamiento_ecog_info.log',     # nombre del archivo de log
+    filename=logdir+'entrenamiento_ecog_info.log',     # nombre del archivo de log
     level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
     filemode='w'  # o 'a' para agregar sin sobrescribir
@@ -38,6 +47,7 @@ logging.info("======================Inicio======================")
 import sys
 logging.info(f'Python {sys.version.split()[0]}')
 
+import os
 
 
 import scipy
@@ -521,7 +531,14 @@ for i in range(test_pred_s1.shape[1]):
 
 interp_pred1_nn = np.vstack((cs1[0](xs),cs1[1](xs), cs1[2](xs), cs1[3](xs), cs1[4](xs))).T
 
-filename = 'Predictions/subj1_testpredictions.mat'
+folder = 'Predictions'
+try:
+    os.mkdir(folder)
+    logging.info(f"Carpeta {folder} Creada")
+except:
+    logging.info(f"Carpeta {folder} ya existía")
+    
+filename = folder + '/subj1_testpredictions.mat'
 mat_dict = {'predicted_dg': interp_pred1_nn}
 savemat(filename, mat_dict)
 
