@@ -1,0 +1,13 @@
+name: ECoG
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy
+  - scikit-learn
+  - scipy
+  - tensorboard
+  - tensorflow
+  - spyder
+  - matplotlib
+prefix: D:\ProgramData\anaconda3\envs\ECoG
