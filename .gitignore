@@ -1,2 +1,5 @@
-*.mat
+# Ignorar todos los archivos .log en cualquier parte del proyecto
 *.log
+
+# Ignorar archivos .mat solo en Dataset_and_Models/Dataset4 BCICIV/
+Dataset_and_Models/Dataset4 BCICIV/*.mat
