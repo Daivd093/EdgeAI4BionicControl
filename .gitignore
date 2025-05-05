@@ -1,5 +1,18 @@
-# Ignorar todos los archivos .log en cualquier parte del proyecto
+# Ignorar Logs
 *.log
 
-# Ignorar archivos .mat solo en Dataset_and_Models/Dataset4 BCICIV/
+# Ignorar archivos .mat del dataset
 Dataset_and_Models/Dataset4 BCICIV/*.mat
+
+# Ignorar salidas del Build de STM32CubeIDE (todos los proyectos dentro de ST_Workspace/)
+ST_Workspace/**/Debug/
+ST_Workspace/**/Release/
+*.o
+*.d
+*.elf
+*.hex
+*.bin
+*.map
+
+# Ignorar STM32CubeIDE temporary or local settings
+*.launch
