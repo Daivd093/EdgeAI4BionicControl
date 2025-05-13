@@ -11,15 +11,16 @@ import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import load_model
 
-model_file = "sine_model_perfect.h5"
 
-model = load_model(model_file)
+model_name = "sine_model_perfect"
+
+model = load_model(model_name+".h5")
 
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 tflite_model = converter.convert()
 
-open(tflite_model_name+'_32float'+'.tflite','wb').write(tflite_model)
+open(model_name+'_32float'+'.tflite','wb').write(tflite_model)
 
 
 
@@ -40,5 +41,5 @@ converter.inference_output_type = tf.int8
 
 tflite_model_quant = converter.convert()
 
-with open("sine_model_quant_int8.tflite", "wb") as f:
+with open(model_name+'_int8'+'.tflite', "wb") as f:
     f.write(tflite_model_quant)
