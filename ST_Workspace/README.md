@@ -6,4 +6,4 @@ This folder contains the final STM32 project that implements the FingerFlexionEs
 
 
 # On how to replicate these projects
-No sé aún
+No sé aún, pero decidí subir todo al final
