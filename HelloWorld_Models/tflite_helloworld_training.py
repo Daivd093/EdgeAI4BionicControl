@@ -36,7 +36,7 @@ val_ratio = 0.2
 test_ratio = 0.2
 tflite_model_name = 'sine_model' #.tflite
 
-plt.figure()
+#plt.figure()
 np.random.seed(1138)
 x_values = np.random.uniform(low=0, high=2*math.pi, size=nsamples)
 #x_values = np.linspace(start=0,stop=2*math.pi,num=nsamples)
@@ -47,7 +47,7 @@ x_values = np.random.uniform(low=0, high=2*math.pi, size=nsamples)
 #plt.close()
 
 plt.figure()
-y_values = np.sin(x_values)#+(0.1*np.random.randn(x_values.shape[0]))
+y_values = np.sin(x_values)+(0.1*np.random.randn(x_values.shape[0]))
 plt.plot(x_values,y_values,'.')
 plt.title("Gráfico de x_values vs y_values")
 plt.show()

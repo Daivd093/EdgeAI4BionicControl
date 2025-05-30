@@ -11,10 +11,10 @@ x_input = np.array([[0.0], [np.pi/2], [3.0], [4.0]], dtype=np.float32)
 pred = model.predict(x_input)
 
 for xi, yi in zip(x_input.flatten(), pred.flatten()):
-    print(f"Predicción para x = {xi:.1f} → {yi:.6f}")
+    print(f"Predicción para x = {xi:.2f} → {yi:.6f}")
 
 n_samples = 10000
-x_values = np.linspace(start=0,stop=2*np.pi,num=n_samples).reshape(-1, 1)
+x_values = np.linspace(start=-1,stop=2*np.pi+1,num=n_samples).reshape(-1, 1)
 y_values = np.sin(x_values)
 predictions = model.predict(x_values)
 plt.clf()
@@ -25,4 +25,7 @@ plt.legend()
 plt.show()
 
 mse_model = 1/n_samples * (sum((y_values-predictions)**2))
-print(mse_model)
+print("Error cuadrático medio del modelo float32 local: ", mse_model)
+
+# Para evaluar
+
