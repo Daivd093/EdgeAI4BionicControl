@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import load_model
 
-model_file = "sine_model_perfect.h5"
+model_file = "sine_model.h5"
 model = load_model(model_file)
 
-x_input = np.array([[0.0], [np.pi/2], [3.0], [4.0]], dtype=np.float32)
+x_input = np.array([[0.0], [1.57], [3.0], [4.0], [3.14]], dtype=np.float32)
 pred = model.predict(x_input)
 
 for xi, yi in zip(x_input.flatten(), pred.flatten()):
