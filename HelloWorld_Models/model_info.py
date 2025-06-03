@@ -8,9 +8,9 @@ interprete.allocate_tensors()
 
 input_details = interprete.get_input_details()
 output_details = interprete.get_output_details()
-tensor_details = interprete.get_tensor_details()
+#tensor_details = interprete.get_tensor_details() # Todo
 
 print("input_details = ", input_details ,'\n\n')
 print("output_details = ", output_details, '\n\n' )
-print("tensor_details = ", tensor_details, '\n\n' )
+#print("tensor_details = ", tensor_details, '\n\n' )
 
