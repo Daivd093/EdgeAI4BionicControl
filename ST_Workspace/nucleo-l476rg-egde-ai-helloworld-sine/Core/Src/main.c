@@ -38,7 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define RX_DATA_SIZE 5
+#define RX_DATA_SIZE 8
+#define VERBOSE 0   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,7 +58,7 @@ UART_HandleTypeDef huart2;
 
 uint8_t rx_indx;
 uint8_t rx_char;
-char rx_data[RX_DATA_SIZE]; // Para números entre 0 y 2*pi con 2 decimales. Ej: "3.14\0"
+char rx_data[RX_DATA_SIZE]; // Pensado en números entre 0 y 2*pi con RX_DATA_SIZE-3 decimales. Ej: RX_DATA_SIZE = 8 -> "3.14159\0"
 
 
 /* USER CODE END PV */
@@ -96,22 +97,16 @@ int main(void)
     AI_ALIGNED(4) ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
 
     // Buffers para los tensores de entradas y salidas
-    // AI_ALIGNED(4) ai_i8 in_data[AI_SINE_MODEL_IN_1_SIZE_BYTES]; // Esto espera int8
-    // AI_ALIGNED(4) ai_i8 out_data[AI_SINE_MODEL_OUT_1_SIZE_BYTES];
     AI_ALIGNED(4) ai_float in_data[AI_SINE_MODEL_IN_1_SIZE]; // Esto espera flotante de 32 bits
     AI_ALIGNED(4) ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE];
-    //AI_ALIGNED(4) ai_u16 in_data[AI_SINE_MODEL_IN_1_SIZE];
-    //AI_ALIGNED(4) ai_u16 out_data[AI_SINE_MODEL_OUT_1_SIZE];
 
 
     ai_handle sine_model = AI_HANDLE_NULL;
 
     // Para guardar punteros hacia los datos
-    ai_buffer ai_input[AI_SINE_MODEL_IN_NUM];// = AI_SINE_MODEL_IN;
-    ai_buffer ai_output[AI_SINE_MODEL_OUT_NUM];// = AI_SINE_MODEL_OUT;
+    ai_buffer ai_input[AI_SINE_MODEL_IN_NUM];
+    ai_buffer ai_output[AI_SINE_MODEL_OUT_NUM];
 
-    //ai_shape_dimension input_shape_data[2] = {1, 1};
-	//ai_shape_dimension output_shape_data[2] = {1, 1};
     ai_shape_dimension input_shape_data[4] = {1, 1, 1, 1};
 	ai_shape_dimension output_shape_data[4] = {1, 1, 1, 1};
 
@@ -128,8 +123,6 @@ int main(void)
     ai_input[0].shape.size = 4;
     ai_input[0].shape.data = input_shape_data;
     ai_input[0].format = AI_BUFFER_FORMAT_FLOAT;
-    //ai_input[0].format = AI_BUFFER_FORMAT_U16; // para AI_F16
-
 
     ai_output[0].data = AI_HANDLE_PTR(out_data);
 	ai_output[0].shape.size = 4;
@@ -163,10 +156,11 @@ int main(void)
 
   // Start timer/counter
   HAL_TIM_Base_Start(&htim16);
-
-  // Saludo
-  buf_len = sprintf(buf, "\r\n\r\nSTM32 X-Cube-AI test\r\n");
-  HAL_UART_Transmit(&huart2, (uint8_t * )buf, buf_len, 100);
+  if (VERBOSE){
+	  // Saludo
+	  buf_len = sprintf(buf, "\r\n\r\nSTM32 X-Cube-AI test\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t * )buf, buf_len, 100);
+  }
 
   // La red en sí
   ai_err = ai_sine_model_create(&sine_model, AI_SINE_MODEL_DATA_CONFIG);
@@ -203,12 +197,19 @@ int main(void)
 	  //uint8_t num;
 	  float user_input = 0.0f;
 
+	  if (VERBOSE){
+		  HAL_UART_Transmit(&huart2, (uint8_t *)"\r\nIngresa un número positivo menor a 2 pi tienes 7 caracteres:\r\n", 65, 100);
 
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"Ingresa un número positivo menor a 2 pi con hasta 2 decimales:\r\n", 65, 100);
+	  }
+
 	  // Receive bloqueante
+
 	  for(rx_indx = 0; rx_indx < RX_DATA_SIZE-1 ; rx_indx++){
 	  	  HAL_UART_Receive(&huart2, &rx_char, 1, HAL_MAX_DELAY); //Recibe 1 caracter
-		  HAL_UART_Transmit(&huart2, &rx_char, 1, 10);
+
+	  	  if(VERBOSE){
+		  	  HAL_UART_Transmit(&huart2, &rx_char, 1, 10);
+	  	  }
 
 		  if(rx_char == '\r' || rx_char == '\n') break;
 
@@ -218,31 +219,22 @@ int main(void)
 	  }
   	  rx_data[rx_indx] = '\0';
 
-
-	  // Echo Final
-	  //HAL_UART_Transmit(&huart2, rx_data, rx_indx, 10);
-	  HAL_UART_Transmit(&huart2, (uint8_t *)"\r\n", 2, 10);
+  	  if (VERBOSE){
+		  // Echo Final
+		  //HAL_UART_Transmit(&huart2, rx_data, rx_indx, 10);
+		  HAL_UART_Transmit(&huart2, (uint8_t *)"\r\n", 2, 10);
+  	  }
 
 	  sscanf(rx_data, "%f", &user_input);
-
-	  if ( user_input < 0 || user_input > 6.28) {
-	      HAL_UART_Transmit(&huart2, (uint8_t *)"Los resultados no serán satisfactorios\r\n", 42, 100);
+	  if (VERBOSE){
+		  if ( user_input < 0 || user_input > 6.28) {
+			  HAL_UART_Transmit(&huart2, (uint8_t *)"Los resultados no serán satisfactorios\r\n", 42, 100);
+		  }
 	  }
-
 	  for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_SIZE; i++)
 	  {
 		  in_data[i] = user_input;
 	  }
-
-	  // Revisar formato de entrada
-//	  ai_network_report report;
-//	  if (ai_sine_model_get_info(sine_model, &report)){
-//	      printf("Input shape (dims=%d): ", report.inputs->shape.size);
-//			  for (int i = 0; i < report.inputs->shape.size; ++i)
-//				  printf("%lu ", (unsigned long)report.inputs->shape.data[i]);
-//			  printf("\r\n");
-//
-//	  }
 
 	  // timestamp inicio
 	  timestamp = htim16.Instance->CNT;
@@ -255,13 +247,17 @@ int main(void)
 	  	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 	  	  while(1);
 	    }
-
+	  long unsigned int tim = htim16.Instance->CNT - timestamp;
 	 // Lee la prediccion
 	  y_val = out_data[0];
-	  buf_len = sprintf(buf, "Input: %.3f -> Output: %.5f | Tiempo: %lu us\r\n", user_input, y_val, htim16.Instance->CNT - timestamp);
+	  if (VERBOSE){
+		  buf_len = sprintf(buf, "Input: %.5f -> Output: %.5f | Tiempo: %lu us\r\n", user_input, y_val, tim);
+	  } else {
+		  buf_len = sprintf(buf, "(%.5f, %.5f)\r\n", user_input, y_val);
+	  }
 	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 
-	  HAL_Delay(500);
+	  //HAL_Delay(500);
 
     /* USER CODE END WHILE */
 

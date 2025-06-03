@@ -1,33 +1,33 @@
 ST Edge AI Core v2.0.0-20049
-Created date          : 2025-05-04 20:07:06
-Parameters            : generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_modelNO_COLAB.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace4247217004297004500127562276416146 --output C:/Users/david/.stm32cubemx/sine_model_output
+Created date          : 2025-05-13 09:00:40
+Parameters            : generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace23272993686280016979467844950043402 --output C:/Users/david/.stm32cubemx/sine_model_output
 
 Exec/report summary (generate)
--------------------------------------------------------------------------------------------------------------------------------
-model file         :   C:\Users\david\Documents\Edging\Repo\EdgeAI4BionicControl\HelloWorld_Models\sine_modelNO_COLAB.tflite   
-type               :   tflite                                                                                                  
-c_name             :   sine_model                                                                                              
-compression        :   none                                                                                                    
-options            :   allocate-inputs, allocate-outputs                                                                       
-optimization       :   balanced                                                                                                
-target/series      :   stm32l4                                                                                                 
-workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace4247217004297004500127562276416146                      
-output dir         :   C:\Users\david\.stm32cubemx\sine_model_output                                                           
-model_fmt          :   float                                                                                                   
-model_name         :   sine_modelNO_COLAB                                                                                      
-model_hash         :   0xfa4a763f642cc27ae5d933c37c830ee0                                                                      
-params #           :   321 items (1.25 KiB)                                                                                    
--------------------------------------------------------------------------------------------------------------------------------
-input 1/1          :   'serving_default_dense_input0', f32(1x1), 4 Bytes, activations                                          
-output 1/1         :   'gemm_2', f32(1x1), 4 Bytes, activations                                                                
-macc               :   353                                                                                                     
-weights (ro)       :   1,284 B (1.25 KiB) (1 segment)                                                                          
-activations (rw)   :   128 B (128 B) (1 segment) *                                                                             
-ram (total)        :   128 B (128 B) = 128 + 0 + 0                                                                             
--------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+model file         :   C:\Users\david\Documents\Edging\Repo\EdgeAI4BionicControl\HelloWorld_Models\sine_model_perfect_32float.tflite   
+type               :   tflite                                                                                                          
+c_name             :   sine_model                                                                                                      
+compression        :   none                                                                                                            
+options            :   allocate-inputs, allocate-outputs                                                                               
+optimization       :   balanced                                                                                                        
+target/series      :   stm32l4                                                                                                         
+workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace23272993686280016979467844950043402                             
+output dir         :   C:\Users\david\.stm32cubemx\sine_model_output                                                                   
+model_fmt          :   float                                                                                                           
+model_name         :   sine_model_perfect_32float                                                                                      
+model_hash         :   0xbfe668a1b7315177b84afa926d44b102                                                                              
+params #           :   321 items (1.25 KiB)                                                                                            
+---------------------------------------------------------------------------------------------------------------------------------------
+input 1/1          :   'serving_default_dense_input0', f32(1x1), 4 Bytes, activations                                                  
+output 1/1         :   'gemm_2', f32(1x1), 4 Bytes, activations                                                                        
+macc               :   353                                                                                                             
+weights (ro)       :   1,284 B (1.25 KiB) (1 segment)                                                                                  
+activations (rw)   :   128 B (128 B) (1 segment) *                                                                                     
+ram (total)        :   128 B (128 B) = 128 + 0 + 0                                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------
 (*) 'input'/'output' buffers can be used from the activations buffer
 
-Model name - sine_modelNO_COLAB
+Model name - sine_model_perfect_32float
 ------ ------------------------------------------------ ------------- ------------ ------ -------------------------------- --- --------------- --------------- ---------------------------- 
 m_id   layer (type,original)                            oshape        param/size     macc                     connected to   | c_size          c_macc          c_type                       
 ------ ------------------------------------------------ ------------- ------------ ------ -------------------------------- --- --------------- --------------- ---------------------------- 
@@ -58,7 +58,7 @@ model/c-model: macc=353/353  weights=1,284/1,284  activations=--/128 io=--/0
 
 Generated C-graph summary
 ------------------------------------------------------------------------------------------------------------------------
-model name            : sine_modelNO_COLAB
+model name            : sine_model_perfect_32float
 c-name                : sine_model
 c-node #              : 5
 c-array #             : 12
