@@ -40,14 +40,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define RX_DATA_SIZE 8 // Cantidad de dígitos (+1) de los números de entrada
-#define VERBOSE 1   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
-
-//Parámetros de escala
-//#define SCALE_IN  0.024420151486992836f
-//#define ZERO_IN  (-128)
-//#define SCALE_OUT  0.0082210972905159f
-//#define ZERO_OUT   (5)
-
+#define VERBOSE 0   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
 
 /* USER CODE END PD */
 
@@ -80,29 +73,12 @@ static void MX_CRC_Init(void);
 static void MX_TIM16_Init(void);
 /* USER CODE BEGIN PFP */
 
-//static inline int8_t quantize(float x);
-//static inline float dequantize(int8_t q);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-/*
-static inline int8_t quantize(float x){
-
-	float qf = x / SCALE_IN + (float)ZERO_IN;
-	if (qf > 127.0f)  qf = 127.0f;
-	if (qf < -128.0f) qf = -128.0f;
-	return (int8_t)qf;
-}
-
-static inline float dequantize(int8_t q){
-
-	float dq = ((float)q - (float)ZERO_OUT)*SCALE_OUT;
-	return dq;
-}
-*/
 
 
 /* USER CODE END 0 */
@@ -128,9 +104,6 @@ int main(void)
     // Buffers para los tensores de entradas y salidas
     AI_ALIGNED(4) ai_float in_data[AI_SINE_MODEL_IN_1_SIZE]; // Esto espera flotante de 32 bits
     AI_ALIGNED(4) ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE];
-    //AI_ALIGNED(4) ai_i8 in_data[AI_SINE_MODEL_IN_1_SIZE]; // Esto espera entero de 8 bits con signo
-	//AI_ALIGNED(4) ai_i8 out_data[AI_SINE_MODEL_OUT_1_SIZE];
-
 
     ai_handle sine_model = AI_HANDLE_NULL;
 
@@ -140,7 +113,6 @@ int main(void)
 
     ai_shape_dimension input_shape_data[4] = {1, 1, 1, 1};
 	ai_shape_dimension output_shape_data[4] = {1, 1, 1, 1};
-
 
 
     // Set working memory and get weights/bias from model
@@ -154,16 +126,13 @@ int main(void)
     ai_input[0].shape.size = 4;
     ai_input[0].shape.data = input_shape_data;
     ai_input[0].format = AI_BUFFER_FORMAT_FLOAT;
-    //ai_input[0].format = AI_BUFFER_FORMAT_Q7;
-
 
     ai_output[0].data = AI_HANDLE_PTR(out_data);
 	ai_output[0].shape.size = 4;
 	ai_output[0].shape.data = output_shape_data;
 	ai_output[0].format = AI_BUFFER_FORMAT_FLOAT;
-	//ai_output[0].format = AI_BUFFER_FORMAT_Q7;
 
-  /* USER CODE END 1 */
+	/* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -226,9 +195,6 @@ int main(void)
   {
 	  // Fill input buffer
 
-
-
-	  //uint8_t num;
 	  float user_input = 0.0f;
 
 	  if (VERBOSE){
@@ -255,7 +221,6 @@ int main(void)
 
   	  if (VERBOSE){
 		  // Echo Final
-		  //HAL_UART_Transmit(&huart2, rx_data, rx_indx, 10);
 		  HAL_UART_Transmit(&huart2, (uint8_t *)"\r\n", 2, 10);
   	  }
 
@@ -267,7 +232,7 @@ int main(void)
 	  }
 	  for (uint32_t i = 0; i < AI_SINE_MODEL_IN_1_SIZE; i++)
 	  {
-		  in_data[i] = user_input;//quantize(user_input);
+		  in_data[i] = user_input;
 	  }
 
 	  // timestamp inicio
@@ -283,7 +248,7 @@ int main(void)
 	    }
 	  long unsigned int tim = htim16.Instance->CNT - timestamp;
 	 // Lee la prediccion
-	  y_val = out_data[0];//dequantize(out_data[0]);
+	  y_val = out_data[0];
 	  if (VERBOSE){
 		  buf_len = sprintf(buf, "Input: %.3f -> Output: %.5f | Tiempo: %lu us\r\n", user_input, y_val, tim);
 	  } else {
