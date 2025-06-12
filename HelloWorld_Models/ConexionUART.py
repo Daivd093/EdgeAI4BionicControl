@@ -49,6 +49,9 @@ for _ in range(V):
     X.append(x)
     Y.append(y)
 
+    X.append(x)
+    Y.append(np.sin(x))
+
 
 legends = []
 for k in range(V):

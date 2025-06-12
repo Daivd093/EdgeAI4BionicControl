@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
 
 
-model_name = "sine_model_perfect"
+model_name = 'model_s1f1' #"sine_model_perfect"
 
 model = load_model(model_name+".h5")
 
@@ -36,10 +36,10 @@ def representative_dataset():
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 converter.representative_dataset = representative_dataset
 converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-converter.inference_input_type = tf.int8
-converter.inference_output_type = tf.int8
+#converter.inference_input_type = tf.int8
+#converter.inference_output_type = tf.int8
 
 tflite_model_quant = converter.convert()
 
-with open(model_name+'_int8'+'.tflite', "wb") as f:
+with open(model_name+'_int8_justweights'+'.tflite', "wb") as f:
     f.write(tflite_model_quant)
