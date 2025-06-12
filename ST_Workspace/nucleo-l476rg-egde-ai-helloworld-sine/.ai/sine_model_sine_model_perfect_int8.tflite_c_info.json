@@ -10,14 +10,14 @@
         "start": 0
       },
       "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 84,
+      "format": "STAI_FORMAT_S32",
+      "id": 85,
       "intq": {},
       "is_param": true,
       "mpool_id": 1,
       "name": "gemm_0_bias_array",
       "nbits": 32,
-      "offset_start": 64,
+      "offset_start": 16,
       "qmn": {},
       "shape": [
         16
@@ -31,28 +31,69 @@
       "alignment": 4,
       "batch": 0,
       "channel_first": true,
+      "channel_last": true,
+      "epochs": {
+        "end": 9,
+        "start": 4
+      },
+      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
+      "format": "STAI_FORMAT_S8",
+      "id": 76,
+      "intq": {
+        "axis": 0,
+        "offsets": [
+          -128
+        ],
+        "scales": [
+          0.01725471392273903
+        ]
+      },
+      "is_param": false,
+      "mpool_id": 0,
+      "name": "gemm_0_output_array",
+      "nbits": 8,
+      "offset_start": 0,
+      "qmn": {},
+      "shape": [
+        16
+      ],
+      "shape_map": [
+        "CH"
+      ],
+      "size_bytes": 16
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": false,
       "channel_last": true,
       "epochs": {
         "end": 6,
         "start": 3
       },
-      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 71,
+      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS|STAI_FLAG_SCRATCHS",
+      "format": "STAI_FORMAT_S16",
+      "id": 103,
       "intq": {},
       "is_param": false,
       "mpool_id": 0,
-      "name": "gemm_0_output_array",
-      "nbits": 32,
-      "offset_start": 64,
+      "name": "gemm_0_scratch0_array",
+      "nbits": 16,
+      "offset_start": 16,
       "qmn": {},
       "shape": [
-        16
+        1,
+        1,
+        1,
+        1
       ],
       "shape_map": [
-        "CH"
+        "H",
+        "W",
+        "CH",
+        "CH_IN"
       ],
-      "size_bytes": 64
+      "size_bytes": 2
     },
     {
       "alignment": 4,
@@ -64,13 +105,21 @@
         "start": 0
       },
       "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 81,
-      "intq": {},
+      "format": "STAI_FORMAT_S8",
+      "id": 82,
+      "intq": {
+        "axis": 1,
+        "offsets": [
+          0
+        ],
+        "scales": [
+          0.005583435762673616
+        ]
+      },
       "is_param": true,
       "mpool_id": 1,
       "name": "gemm_0_weights_array",
-      "nbits": 32,
+      "nbits": 8,
       "offset_start": 0,
       "qmn": {},
       "shape": [
@@ -81,7 +130,7 @@
         "CH",
         "CH_IN"
       ],
-      "size_bytes": 64
+      "size_bytes": 16
     },
     {
       "alignment": 4,
@@ -93,14 +142,14 @@
         "start": 0
       },
       "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 90,
+      "format": "STAI_FORMAT_S32",
+      "id": 91,
       "intq": {},
       "is_param": true,
       "mpool_id": 1,
       "name": "gemm_1_bias_array",
       "nbits": 32,
-      "offset_start": 1152,
+      "offset_start": 336,
       "qmn": {},
       "shape": [
         16
@@ -109,89 +158,6 @@
         "CH"
       ],
       "size_bytes": 64
-    },
-    {
-      "alignment": 4,
-      "batch": 0,
-      "channel_first": true,
-      "channel_last": true,
-      "epochs": {
-        "end": 10,
-        "start": 7
-      },
-      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 75,
-      "intq": {},
-      "is_param": false,
-      "mpool_id": 0,
-      "name": "gemm_1_output_array",
-      "nbits": 32,
-      "offset_start": 0,
-      "qmn": {},
-      "shape": [
-        16
-      ],
-      "shape_map": [
-        "CH"
-      ],
-      "size_bytes": 64
-    },
-    {
-      "alignment": 4,
-      "batch": 0,
-      "channel_first": true,
-      "channel_last": true,
-      "epochs": {
-        "end": 1,
-        "start": 0
-      },
-      "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 87,
-      "intq": {},
-      "is_param": true,
-      "mpool_id": 1,
-      "name": "gemm_1_weights_array",
-      "nbits": 32,
-      "offset_start": 128,
-      "qmn": {},
-      "shape": [
-        16,
-        16
-      ],
-      "shape_map": [
-        "CH",
-        "CH_IN"
-      ],
-      "size_bytes": 1024
-    },
-    {
-      "alignment": 4,
-      "batch": 0,
-      "channel_first": true,
-      "channel_last": true,
-      "epochs": {
-        "end": 1,
-        "start": 0
-      },
-      "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 96,
-      "intq": {},
-      "is_param": true,
-      "mpool_id": 1,
-      "name": "gemm_2_bias_array",
-      "nbits": 32,
-      "offset_start": 1280,
-      "qmn": {},
-      "shape": [
-        1
-      ],
-      "shape_map": [
-        "CH"
-      ],
-      "size_bytes": 4
     },
     {
       "alignment": 4,
@@ -200,17 +166,122 @@
       "channel_last": true,
       "epochs": {
         "end": 13,
-        "start": 11
+        "start": 8
       },
-      "flags": "STAI_FLAG_OUTPUTS|STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 79,
+      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
+      "format": "STAI_FORMAT_S8",
+      "id": 78,
+      "intq": {
+        "axis": 0,
+        "offsets": [
+          -128
+        ],
+        "scales": [
+          0.013963127508759499
+        ]
+      },
+      "is_param": false,
+      "mpool_id": 0,
+      "name": "gemm_1_output_array",
+      "nbits": 8,
+      "offset_start": 48,
+      "qmn": {},
+      "shape": [
+        16
+      ],
+      "shape_map": [
+        "CH"
+      ],
+      "size_bytes": 16
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": false,
+      "channel_last": true,
+      "epochs": {
+        "end": 10,
+        "start": 7
+      },
+      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS|STAI_FLAG_SCRATCHS",
+      "format": "STAI_FORMAT_S16",
+      "id": 109,
       "intq": {},
       "is_param": false,
       "mpool_id": 0,
-      "name": "gemm_2_output_array",
+      "name": "gemm_1_scratch0_array",
+      "nbits": 16,
+      "offset_start": 16,
+      "qmn": {},
+      "shape": [
+        1,
+        1,
+        16,
+        1
+      ],
+      "shape_map": [
+        "H",
+        "W",
+        "CH",
+        "CH_IN"
+      ],
+      "size_bytes": 32
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": true,
+      "channel_last": true,
+      "epochs": {
+        "end": 1,
+        "start": 0
+      },
+      "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
+      "format": "STAI_FORMAT_S8",
+      "id": 88,
+      "intq": {
+        "axis": 1,
+        "offsets": [
+          0
+        ],
+        "scales": [
+          0.006593042053282261
+        ]
+      },
+      "is_param": true,
+      "mpool_id": 1,
+      "name": "gemm_1_weights_array",
+      "nbits": 8,
+      "offset_start": 80,
+      "qmn": {},
+      "shape": [
+        16,
+        16
+      ],
+      "shape_map": [
+        "CH",
+        "CH_IN"
+      ],
+      "size_bytes": 256
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": true,
+      "channel_last": true,
+      "epochs": {
+        "end": 1,
+        "start": 0
+      },
+      "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
+      "format": "STAI_FORMAT_S32",
+      "id": 97,
+      "intq": {},
+      "is_param": true,
+      "mpool_id": 1,
+      "name": "gemm_2_bias_array",
       "nbits": 32,
-      "offset_start": 0,
+      "offset_start": 416,
       "qmn": {},
       "shape": [
         1
@@ -226,18 +297,94 @@
       "channel_first": true,
       "channel_last": true,
       "epochs": {
+        "end": 15,
+        "start": 12
+      },
+      "flags": "STAI_FLAG_OUTPUTS|STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
+      "format": "STAI_FORMAT_S8",
+      "id": 80,
+      "intq": {
+        "axis": 0,
+        "offsets": [
+          5
+        ],
+        "scales": [
+          0.0082210972905159
+        ]
+      },
+      "is_param": false,
+      "mpool_id": 0,
+      "name": "gemm_2_output_array",
+      "nbits": 8,
+      "offset_start": 32,
+      "qmn": {},
+      "shape": [
+        1
+      ],
+      "shape_map": [
+        "CH"
+      ],
+      "size_bytes": 1
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": false,
+      "channel_last": true,
+      "epochs": {
+        "end": 14,
+        "start": 11
+      },
+      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS|STAI_FLAG_SCRATCHS",
+      "format": "STAI_FORMAT_S16",
+      "id": 115,
+      "intq": {},
+      "is_param": false,
+      "mpool_id": 0,
+      "name": "gemm_2_scratch0_array",
+      "nbits": 16,
+      "offset_start": 0,
+      "qmn": {},
+      "shape": [
+        1,
+        1,
+        16,
+        1
+      ],
+      "shape_map": [
+        "H",
+        "W",
+        "CH",
+        "CH_IN"
+      ],
+      "size_bytes": 32
+    },
+    {
+      "alignment": 4,
+      "batch": 0,
+      "channel_first": true,
+      "channel_last": true,
+      "epochs": {
         "end": 1,
         "start": 0
       },
       "flags": "STAI_FLAG_WEIGHTS|STAI_FLAG_CONST|STAI_FLAG_PREALLOCATED",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 93,
-      "intq": {},
+      "format": "STAI_FORMAT_S8",
+      "id": 94,
+      "intq": {
+        "axis": 1,
+        "offsets": [
+          0
+        ],
+        "scales": [
+          0.012390585616230965
+        ]
+      },
       "is_param": true,
       "mpool_id": 1,
       "name": "gemm_2_weights_array",
-      "nbits": 32,
-      "offset_start": 1216,
+      "nbits": 8,
+      "offset_start": 400,
       "qmn": {},
       "shape": [
         1,
@@ -247,7 +394,7 @@
         "CH",
         "CH_IN"
       ],
-      "size_bytes": 64
+      "size_bytes": 16
     },
     {
       "alignment": 4,
@@ -255,72 +402,26 @@
       "channel_first": true,
       "channel_last": true,
       "epochs": {
-        "end": 8,
-        "start": 5
-      },
-      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 73,
-      "intq": {},
-      "is_param": false,
-      "mpool_id": 0,
-      "name": "nl_0_nl_output_array",
-      "nbits": 32,
-      "offset_start": 64,
-      "qmn": {},
-      "shape": [
-        16
-      ],
-      "shape_map": [
-        "CH"
-      ],
-      "size_bytes": 64
-    },
-    {
-      "alignment": 4,
-      "batch": 0,
-      "channel_first": true,
-      "channel_last": true,
-      "epochs": {
-        "end": 12,
-        "start": 9
-      },
-      "flags": "STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 77,
-      "intq": {},
-      "is_param": false,
-      "mpool_id": 0,
-      "name": "nl_1_nl_output_array",
-      "nbits": 32,
-      "offset_start": 64,
-      "qmn": {},
-      "shape": [
-        16
-      ],
-      "shape_map": [
-        "CH"
-      ],
-      "size_bytes": 64
-    },
-    {
-      "alignment": 4,
-      "batch": 0,
-      "channel_first": true,
-      "channel_last": true,
-      "epochs": {
-        "end": 4,
+        "end": 5,
         "start": 2
       },
       "flags": "STAI_FLAG_INPUTS|STAI_FLAG_PREALLOCATED|STAI_FLAG_ACTIVATIONS",
-      "format": "STAI_FORMAT_FLOAT",
-      "id": 69,
-      "intq": {},
+      "format": "STAI_FORMAT_S8",
+      "id": 74,
+      "intq": {
+        "axis": 0,
+        "offsets": [
+          -128
+        ],
+        "scales": [
+          0.024420151486992836
+        ]
+      },
       "is_param": false,
       "mpool_id": 0,
       "name": "serving_default_dense_input0_output_array",
-      "nbits": 32,
-      "offset_start": 60,
+      "nbits": 8,
+      "offset_start": 20,
       "qmn": {},
       "shape": [
         1
@@ -328,62 +429,62 @@
       "shape_map": [
         "CH"
       ],
-      "size_bytes": 4
+      "size_bytes": 1
     }
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2025-06-03T11:20:24-0400",
+      "generated_time": "2025-06-03T00:04:15-0400",
       "model_files": [
         {
           "name": "sine_model_data_params.h",
-          "signature": "0x73f3f5eeaee1afd759b6a881c23544b8"
+          "signature": "0x35cca46bcfa9ea1975299721ddb9d51f"
         },
         {
           "name": "sine_model_data_params.c",
-          "signature": "0xa7c722e4c2f640f651103ec65db9d39c"
+          "signature": "0x3f3ba0dc1b67b199553f22e8084b0415"
         },
         {
           "name": "sine_model_data.h",
-          "signature": "0x549ab62790f4f8fc300410c41c3a97cb"
+          "signature": "0xff671f846607260f77b3204fff07393f"
         },
         {
           "name": "sine_model_data.c",
-          "signature": "0xf171168bc344ba8373c4b9d0351355d0"
+          "signature": "0x19b9073db1731b2639a141c7bfd4f5de"
         },
         {
           "name": "sine_model_config.h",
-          "signature": "0xe045b2fb1b0c13b4ac415458f7f3e372"
+          "signature": "0x1b5d12c11d755ac6f57816adb21f0aff"
         },
         {
           "name": "sine_model.h",
-          "signature": "0x982d5bef5f5ef992a60beee2f72aa1a4"
+          "signature": "0xa90d406cfe1d5b7055479e6353ff2824"
         },
         {
           "name": "sine_model.c",
-          "signature": "0x3bf96fd062a5b9b89e22f61c0cbe5693"
+          "signature": "0x076e21cc7bb5b73d1d60c3b9d24e8c08"
         }
       ],
       "name": "sine_model"
     },
-    "network_signature": "0x23c89824d34a16de",
+    "network_signature": "0x5e47439aa766a5e6",
     "test_name": "",
     "tools": [
       {
-        "arguments": "analyze --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace1503120824780010667134791647230032 --output C:/Users/david/.stm32cubemx/sine_model_output",
+        "arguments": "generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace64649087338760011015858403968036495 --output C:/Users/david/.stm32cubemx/sine_model_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],
         "input_model": {
           "model_files": [
             {
-              "name": "sine_model_perfect_32float.tflite",
-              "signature": "0xbfe668a1b7315177b84afa926d44b102"
+              "name": "sine_model_perfect_int8.tflite",
+              "signature": "0x35b7f92eda508828f301571e778df682"
             }
           ],
           "n_params": 321,
-          "name": "sine_model_perfect_32float",
-          "size": 1284,
+          "name": "sine_model_perfect_int8",
+          "size": 420,
           "type": "tflite"
         },
         "name": "ST.EdgeAI.Core",
@@ -395,67 +496,39 @@
     {
       "edges": [
         {
-          "buffer": 71,
-          "edge_kind": "EDGE_MEMORY",
-          "end": {
-            "node_id": 8,
-            "port": 0
-          },
-          "id": 0,
-          "name": "n7-p0_n8-p0",
-          "start": {
-            "node_id": 7,
-            "port": 0
-          }
-        },
-        {
-          "buffer": 73,
-          "edge_kind": "EDGE_MEMORY",
-          "end": {
-            "node_id": 9,
-            "port": 0
-          },
-          "id": 1,
-          "name": "n8-p0_n9-p0",
-          "start": {
-            "node_id": 8,
-            "port": 0
-          }
-        },
-        {
-          "buffer": 75,
-          "edge_kind": "EDGE_MEMORY",
-          "end": {
-            "node_id": 10,
-            "port": 0
-          },
-          "id": 2,
-          "name": "n9-p0_n10-p0",
-          "start": {
-            "node_id": 9,
-            "port": 0
-          }
-        },
-        {
-          "buffer": 77,
+          "buffer": 76,
           "edge_kind": "EDGE_MEMORY",
           "end": {
             "node_id": 11,
             "port": 0
           },
-          "id": 3,
+          "id": 0,
           "name": "n10-p0_n11-p0",
           "start": {
             "node_id": 10,
+            "port": 0
+          }
+        },
+        {
+          "buffer": 78,
+          "edge_kind": "EDGE_MEMORY",
+          "end": {
+            "node_id": 12,
+            "port": 0
+          },
+          "id": 1,
+          "name": "n11-p0_n12-p0",
+          "start": {
+            "node_id": 11,
             "port": 0
           }
         }
       ],
       "id": 0,
       "inputs": [
-        69
+        74
       ],
-      "name": "sine_model_perfect_32float",
+      "name": "sine_model_perfect_int8",
       "nodes": [
         {
           "attributes": {
@@ -463,11 +536,11 @@
             "use_bias": "True"
           },
           "description": "Dense",
-          "id": 7,
+          "id": 10,
           "inputs": [
-            69,
-            81,
-            84
+            74,
+            82,
+            85
           ],
           "macc": 32,
           "mapping": "NODE_SW",
@@ -476,36 +549,14 @@
             "0"
           ],
           "outputs": [
-            71
+            76
           ],
-          "scratchs": [],
+          "scratchs": [
+            103
+          ],
           "subgraph_nodes": [],
           "sw_functions": [
-            "forward_dense"
-          ]
-        },
-        {
-          "attributes": {
-            "nonlinearity": "relu"
-          },
-          "description": "Nonlinearity",
-          "id": 8,
-          "inputs": [
-            71
-          ],
-          "macc": 16,
-          "mapping": "NODE_SW",
-          "name": "nl_0_nl",
-          "original_nodes": [
-            "0"
-          ],
-          "outputs": [
-            73
-          ],
-          "scratchs": [],
-          "subgraph_nodes": [],
-          "sw_functions": [
-            "forward_relu"
+            "forward_dense_integer_SSSA"
           ]
         },
         {
@@ -514,11 +565,11 @@
             "use_bias": "True"
           },
           "description": "Dense",
-          "id": 9,
+          "id": 11,
           "inputs": [
-            73,
-            87,
-            90
+            76,
+            88,
+            91
           ],
           "macc": 272,
           "mapping": "NODE_SW",
@@ -527,36 +578,14 @@
             "1"
           ],
           "outputs": [
-            75
+            78
           ],
-          "scratchs": [],
+          "scratchs": [
+            109
+          ],
           "subgraph_nodes": [],
           "sw_functions": [
-            "forward_dense"
-          ]
-        },
-        {
-          "attributes": {
-            "nonlinearity": "relu"
-          },
-          "description": "Nonlinearity",
-          "id": 10,
-          "inputs": [
-            75
-          ],
-          "macc": 16,
-          "mapping": "NODE_SW",
-          "name": "nl_1_nl",
-          "original_nodes": [
-            "1"
-          ],
-          "outputs": [
-            77
-          ],
-          "scratchs": [],
-          "subgraph_nodes": [],
-          "sw_functions": [
-            "forward_relu"
+            "forward_dense_integer_SSSA"
           ]
         },
         {
@@ -565,11 +594,11 @@
             "use_bias": "True"
           },
           "description": "Dense",
-          "id": 11,
+          "id": 12,
           "inputs": [
-            77,
-            93,
-            96
+            78,
+            94,
+            97
           ],
           "macc": 17,
           "mapping": "NODE_SW",
@@ -578,19 +607,21 @@
             "2"
           ],
           "outputs": [
-            79
+            80
           ],
-          "scratchs": [],
+          "scratchs": [
+            115
+          ],
           "subgraph_nodes": [],
           "sw_functions": [
-            "forward_dense"
+            "forward_dense_integer_SSSA"
           ]
         }
       ],
       "original_inputs": [
         {
           "serving_default_dense_input0": {
-            "data_type": "float32",
+            "data_type": "int8",
             "shape": "(BATCH: 1, CH: 1)"
           }
         }
@@ -598,30 +629,30 @@
       "original_outputs": [
         {
           "gemm_2": {
-            "data_type": "float32",
+            "data_type": "int8",
             "shape": "(BATCH: 1, CH: 1)"
           }
         }
       ],
       "outputs": [
-        79
+        80
       ]
     }
   ],
   "json_schema_version": "2.0",
   "memory_footprint": {
-    "activations": 128,
+    "activations": 64,
     "io": [
       0,
       0
     ],
-    "kernel_flash": 8848,
-    "kernel_ram": 1812,
+    "kernel_flash": 11655,
+    "kernel_ram": 1696,
     "series": "stm32l4",
     "toolchain": "arm-none-eabi-gcc (GNU Tools for STM32 13.3.rel1.20240926-1715) 13.3.1 20240614",
-    "toolchain_flash": 0,
+    "toolchain_flash": 1652,
     "toolchain_ram": 0,
-    "weights": 1284
+    "weights": 420
   },
   "memory_pools": [
     {
@@ -633,12 +664,13 @@
         "throughput": "LOW"
       },
       "buffers": [
-        69,
-        71,
-        73,
-        75,
-        77,
-        79
+        74,
+        76,
+        78,
+        80,
+        103,
+        109,
+        115
       ],
       "id": 0,
       "name": "heap_overlay_pool",
@@ -647,7 +679,7 @@
       "rights": "ACC_WRITE",
       "size_bytes": -1,
       "subpools": [],
-      "used_size_bytes": 128,
+      "used_size_bytes": 64,
       "user_allocated": false,
       "virtual": false
     },
@@ -660,12 +692,12 @@
         "throughput": "UNDEF"
       },
       "buffers": [
-        81,
-        84,
-        87,
-        90,
-        93,
-        96
+        82,
+        85,
+        88,
+        91,
+        94,
+        97
       ],
       "id": 1,
       "name": "weights_array",
@@ -674,7 +706,7 @@
       "rights": "ACC_READ",
       "size_bytes": -1,
       "subpools": [],
-      "used_size_bytes": 1284,
+      "used_size_bytes": 420,
       "user_allocated": false,
       "virtual": false
     }

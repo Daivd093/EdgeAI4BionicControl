@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.models import load_model
 
 
-model_name = 'model_s1f1' #"sine_model_perfect"
+model_name = "sine_model_perfect"
 
 model = load_model(model_name+".h5")
 
