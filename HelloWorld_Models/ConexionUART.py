@@ -9,11 +9,15 @@ V = int(input("¿Cuántas veces quieres correr esto?\n"))
 
 X = []
 Y = []
+L = []
 
 for _ in range(V):
     S = input("¿Sigo? [y]/n\n")
     if (S.lower()=="n"):
         break
+    
+    l = input("¿Qué leyenda quiere ponerle a este modelo?\n")
+    L.append(l)
 
     puerto = 'COM3'
     baudrate = 115200
@@ -49,14 +53,26 @@ for _ in range(V):
     X.append(x)
     Y.append(y)
 
+
+
+
+Ref = input("¿Quiere agregar referencia sin(x)? [y]/n")
+if (Ref.lower() != "n"):
+    N = 10000
+    x = np.linspace(0,2*np.pi,N)
+    y = np.sin(x)
+
     X.append(x)
-    Y.append(np.sin(x))
+    Y.append(y)
+
+    V+=1
+    L.append("sin(x)")
 
 
 legends = []
 for k in range(V):
     plt.plot(X[k],Y[k])
-    legends.append(f"Modelo {V}")
+    legends.append(L[k])
     
 plt.legend(legends)
 plt.show()
