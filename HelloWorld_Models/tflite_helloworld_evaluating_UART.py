@@ -4,6 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
     
+import pickle
 
 V = int(input("¿Cuántas veces quieres correr esto?\n"))
 
@@ -56,7 +57,7 @@ for _ in range(V):
 
 
 
-Ref = input("¿Quiere agregar referencia sin(x)? [y]/n")
+Ref = input("¿Quiere agregar referencia sin(x)? [y]/n\n")
 if (Ref.lower() != "n"):
     N = 10000
     x = np.linspace(0,2*np.pi,N)
@@ -68,6 +69,19 @@ if (Ref.lower() != "n"):
     V+=1
     L.append("sin(x)")
 
+Save = input("¿Quiere guardar X,Y,L? [y]/n\n")
+if (Ref.lower() != "n"):
+    with open("datos.pkl", "wb") as f:
+        pickle.dump((X, Y, L), f)
+
+"""
+# Para leer es simplemente
+
+with open("datos.pkl", "rb") as f:
+    X, Y, L = pickle.load(f)
+
+"""
+
 
 legends = []
 for k in range(V):
@@ -76,3 +90,18 @@ for k in range(V):
     
 plt.legend(legends)
 plt.show()
+
+
+# Para ver el error cuadrático medio, considerando que la función real es el seno de X:
+# (Esto podría perfectamente ir en un archivo aparte)
+for k in range(V):
+    assert len(X[k]) == len(Y[k])
+
+    X = np.array(X)
+    Y = np.array(Y)
+
+    N = len(X[k])
+
+    mse_model = 1/N * (sum((Y[k]-np.sin(X[k]))**2))
+
+    print(f"MSE_{L[k]} = {mse_model}\n")
