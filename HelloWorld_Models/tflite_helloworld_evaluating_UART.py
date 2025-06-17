@@ -1,3 +1,21 @@
+"""
+@author: DaivdTP
+
+Este archivo contiene código para probar múltiples modelos neuronales via UART.
+Este archivo se ejecuta en el PC y se define cuántas veces se quiere correr (cuántas redes neuronales se quieren evaluar)
+Luego, asegurando que haya una conexión por UART con una red neuronal que entrega sus respuestas del modo (input,output), 
+se deja que el programa envíe 10000 números entre 0 y 2 pi. Al terminar muestra una gráfica de los resultados y pide confirmación
+antes de volver a ejecutarse. 
+Se debe cambiar la red neuronal del microcontrolador antes de confirmar que se quiere seguir.
+
+Al terminar se pregunta si se quiere añadir la función verdadera (en este caso, el seno de x) para luego graficar todos los modelos y la referencia.
+
+Finalmente, se calcula el mse asociado a cada modelo. La versión actual calcula el mse con respecto al seno de x y no revisa si la última entrada
+es la referencia o no.
+Versiones posteriores de esto podrían aumentar robustez
+"""
+
+
 import serial
 import time
 
