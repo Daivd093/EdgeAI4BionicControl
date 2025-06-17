@@ -12,7 +12,10 @@ Al terminar se pregunta si se quiere añadir la función verdadera (en este caso
 
 Finalmente, se calcula el mse asociado a cada modelo. La versión actual calcula el mse con respecto al seno de x y no revisa si la última entrada
 es la referencia o no.
+
 Versiones posteriores de esto podrían aumentar robustez
+Podrían incluir alguna especie de pantalla de carga
+Podrían revisar si el último modelo es la referencia
 """
 
 

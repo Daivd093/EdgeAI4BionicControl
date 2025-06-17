@@ -10,4 +10,3 @@ dependencies:
   - tensorflow
   - spyder
   - matplotlib
-prefix: D:\ProgramData\anaconda3\envs\ECoG
