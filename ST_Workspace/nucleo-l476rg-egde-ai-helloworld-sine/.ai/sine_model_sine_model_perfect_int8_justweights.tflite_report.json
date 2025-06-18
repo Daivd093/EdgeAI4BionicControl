@@ -1,7 +1,7 @@
 {
     "_allocate_inputs": 4,
     "_allocate_outputs": 4,
-    "cli_parameters": "generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_int8_justweights.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace9215923225007903896892545490982 --output C:/Users/david/.stm32cubemx/sine_model_output",
+    "cli_parameters": "generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_int8_justweights.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace825382238823008772992312777754847 --output C:/Users/david/.stm32cubemx/sine_model_output",
     "cli_version": {
         "extra": "20049",
         "major": 2,
@@ -11,7 +11,7 @@
     "cli_version_str": "2.0.0-20049",
     "code_size": 0,
     "compression": [],
-    "date_time": "2025-06-12T02:12:18-0400",
+    "date_time": "2025-06-18T02:44:30-0400",
     "error": 0,
     "error_str": [],
     "exec_cmd": "generate",

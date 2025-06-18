@@ -132,7 +132,7 @@ int main(void)
 	ai_output[0].shape.data = output_shape_data;
 	ai_output[0].format = AI_BUFFER_FORMAT_FLOAT;
 
-	/* USER CODE END 1 */
+  /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 

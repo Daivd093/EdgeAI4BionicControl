@@ -42,7 +42,7 @@
         }
     },
     "activations_alignment": 4,
-    "arguments": "analyze --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace1503120824780010667134791647230032 --output C:/Users/david/.stm32cubemx/sine_model_output",
+    "arguments": "generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace26025962135090015730304773963065980 --output C:/Users/david/.stm32cubemx/sine_model_output",
     "c_activations_count": 1,
     "c_arrays": [
         {
@@ -520,7 +520,7 @@
         ]
     },
     "data_alignment": 4,
-    "date_time": "2025-06-03T11:20:24-0400",
+    "date_time": "2025-06-15T02:14:10-0400",
     "inputs": [
         "serving_default_dense_input0_output"
     ],

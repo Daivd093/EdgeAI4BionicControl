@@ -1,6 +1,6 @@
 ST Edge AI Core v2.0.0-20049
-Created date          : 2025-06-12 02:12:21
-Parameters            : generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_int8_justweights.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace9215923225007903896892545490982 --output C:/Users/david/.stm32cubemx/sine_model_output
+Created date          : 2025-06-18 02:44:33
+Parameters            : generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_int8_justweights.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace825382238823008772992312777754847 --output C:/Users/david/.stm32cubemx/sine_model_output
 
 Exec/report summary (generate)
 ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ compression        :   none
 options            :   allocate-inputs, allocate-outputs                                                                                        
 optimization       :   balanced                                                                                                                 
 target/series      :   stm32l4                                                                                                                  
-workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace9215923225007903896892545490982                                          
+workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace825382238823008772992312777754847                                        
 output dir         :   C:\Users\david\.stm32cubemx\sine_model_output                                                                            
 model_fmt          :   ss/sa per tensor                                                                                                         
 model_name         :   sine_model_perfect_int8_justweights                                                                                      

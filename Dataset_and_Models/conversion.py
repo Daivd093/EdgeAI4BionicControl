@@ -31,7 +31,7 @@ import tensorflow as tf
 
 
 finger_ids = [1, 2, 3, 4, 5]
-subject_ids = [1] #[1,2,3]
+subject_ids = [2] #[1,2,3]
 
 model_dir = "models/"
 tflite_dir = "tflite/"

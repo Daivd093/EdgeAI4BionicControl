@@ -333,44 +333,44 @@
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2025-06-03T11:20:24-0400",
+      "generated_time": "2025-06-15T02:14:10-0400",
       "model_files": [
         {
           "name": "sine_model_data_params.h",
-          "signature": "0x73f3f5eeaee1afd759b6a881c23544b8"
+          "signature": "0xc4d41d5c3bc9a61d04a69efdd449f23d"
         },
         {
           "name": "sine_model_data_params.c",
-          "signature": "0xa7c722e4c2f640f651103ec65db9d39c"
+          "signature": "0xfa03a74e139b27ff0fbda13ba1ee6e9f"
         },
         {
           "name": "sine_model_data.h",
-          "signature": "0x549ab62790f4f8fc300410c41c3a97cb"
+          "signature": "0xbd11b1013100a2efee371ab4c4e1fb31"
         },
         {
           "name": "sine_model_data.c",
-          "signature": "0xf171168bc344ba8373c4b9d0351355d0"
+          "signature": "0x7cace600999c575ba4500cd380ef2057"
         },
         {
           "name": "sine_model_config.h",
-          "signature": "0xe045b2fb1b0c13b4ac415458f7f3e372"
+          "signature": "0x60ea4407135f31248e81df17a8ab53d3"
         },
         {
           "name": "sine_model.h",
-          "signature": "0x982d5bef5f5ef992a60beee2f72aa1a4"
+          "signature": "0xaaa0f427ef17ec9cb2efe0f4719cb0c5"
         },
         {
           "name": "sine_model.c",
-          "signature": "0x3bf96fd062a5b9b89e22f61c0cbe5693"
+          "signature": "0x2b4dbde98279f60a6aed9b067dc03de1"
         }
       ],
       "name": "sine_model"
     },
-    "network_signature": "0x23c89824d34a16de",
+    "network_signature": "0x80feb96955785085",
     "test_name": "",
     "tools": [
       {
-        "arguments": "analyze --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace1503120824780010667134791647230032 --output C:/Users/david/.stm32cubemx/sine_model_output",
+        "arguments": "generate --target stm32l4 --name sine_model -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/HelloWorld_Models/sine_model_perfect_32float.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace26025962135090015730304773963065980 --output C:/Users/david/.stm32cubemx/sine_model_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],

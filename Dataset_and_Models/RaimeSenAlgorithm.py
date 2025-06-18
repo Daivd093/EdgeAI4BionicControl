@@ -18,6 +18,8 @@ Se hizo usando  Python 3.9.18
                 Tensorflow 2.10.0
                 scikit-learn 1.6.1
 
+                
+Estoy usando subject2 como si fuese subject1, luego lo arreglaré
 """
 import time
 START_TIME = time.time()
@@ -94,32 +96,37 @@ logging.info(f'scikit-learn {sklearn.__version__}')
 
 fs = 1000 #Hz
 
-subject1 = loadmat('Dataset4 BCICIV/sub1_comp.mat')
-subject2 = loadmat('Dataset4 BCICIV/sub2_comp.mat')
-subject3 = loadmat('Dataset4 BCICIV/sub3_comp.mat')
+subject1 = loadmat('Dataset4 BCICIV/sub2_comp.mat')  # Los cambié por ahora, luego haré la conversión larga
+#subject2 = loadmat('Dataset4 BCICIV/sub2_comp.mat')
+#subject3 = loadmat('Dataset4 BCICIV/sub3_comp.mat')
 
 train_dg1 = subject1['train_dg']
-train_dg2 = subject2['train_dg']
-train_dg3 = subject3['train_dg']
+#train_dg2 = subject2['train_dg']
+#train_dg3 = subject3['train_dg']
 
 train_data1 = subject1['train_data']
-train_data2 = subject2['train_data']
-train_data3 = subject3['train_data']
+#train_data2 = subject2['train_data']
+#train_data3 = subject3['train_data']
 
 test_data1 = subject1['test_data']
-test_data2 = subject2['test_data']
-test_data3 = subject3['test_data']
+#test_data2 = subject2['test_data']
+#test_data3 = subject3['test_data']
 
 
 #Preprocess: Removing bad channels
 
 # We have to remove chanel 54 from subject1
-train_data1 = np.delete(train_data1, 54,1)
-test_data1 = np.delete(test_data1, 54,1)
+#train_data1 = np.delete(train_data1, 54,1)
+#test_data1 = np.delete(test_data1, 54,1)
+
+train_data1 = np.delete(train_data1, [20,37],1)
+test_data1 = np.delete(test_data1, [20,37],1)
+
+
 
 # We have to remove chanels 20 and 37 from subject2
-train_data2 = np.delete(train_data2, [20,37],1)
-test_data2 = np.delete(test_data2, [20,37],1)
+#train_data2 = np.delete(train_data2, [20,37],1)
+#test_data2 = np.delete(test_data2, [20,37],1)
 
 # We don't need to remove any channels from subject3
 
@@ -454,7 +461,7 @@ model_s1_f1.fit(R1_train_part, y_train_part[:,0],
                 epochs=500, batch_size=32,
                 callbacks=[early_stop], verbose=1)
 end_s1_f1 = time.time()
-model_s1_f1.save('models/model_s1f1.h5')
+model_s1_f1.save('models/model_s2f1.h5')
 #predictions
 test_pred_s1_f1 = model_s1_f1.predict(R1_test)
 
@@ -469,7 +476,7 @@ model_s1_f2.fit(R1_train_part, y_train_part[:,1],
                 epochs=500, batch_size=32,
                 callbacks=[early_stop], verbose=1)
 end_s1_f2 = time.time()
-model_s1_f2.save('models/model_s1f2.h5')
+model_s1_f2.save('models/model_s2f2.h5')
 #predictions
 test_pred_s1_f2 = model_s1_f2.predict(R1_test)
 
@@ -484,7 +491,7 @@ model_s1_f3.fit(R1_train_part, y_train_part[:,2],
                 epochs=500, batch_size=64,
                 callbacks=[early_stop], verbose=1)
 end_s1_f3 = time.time()
-model_s1_f3.save('models/model_s1f3.h5')
+model_s1_f3.save('models/model_s2f3.h5')
 #predictions
 test_pred_s1_f3 = model_s1_f3.predict(R1_test)
 
@@ -499,7 +506,7 @@ model_s1_f4.fit(R1_train_part, y_train_part[:,3],
                 epochs=500, batch_size=32,
                 callbacks=[early_stop], verbose=1)
 end_s1_f4 = time.time()
-model_s1_f4.save('models/model_s1f4.h5')
+model_s1_f4.save('models/model_s2f4.h5')
 #predictions
 test_pred_s1_f4 = model_s1_f4.predict(R1_test)
 
@@ -514,7 +521,7 @@ model_s1_f5.fit(R1_train_part, y_train_part[:,4],
                 epochs=500, batch_size=64,
                 callbacks=[early_stop], verbose=1)
 end_s1_f5 = time.time()
-model_s1_f5.save('models/model_s1f5.h5')
+model_s1_f5.save('models/model_s2f5.h5')
 #predictions
 test_pred_s1_f5 = model_s1_f5.predict(R1_test)
 
