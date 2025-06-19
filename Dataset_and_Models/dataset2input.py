@@ -99,6 +99,7 @@ test_dg = testlabels['test_dg']
 Remove = input("¿Qué canales deseas eliminar? [54/20 37/]\n(Si quiere más se uno, separe los números con un espacio y si no quiere ninguno, no ingrese nada)")
 Remove = Remove.split(" ")
 Remove = [int(cr) for cr in Remove]
+logging.info(f"Se eliminarán los canales {Remove}")
 
 
 
