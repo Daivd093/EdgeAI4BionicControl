@@ -4,6 +4,9 @@
 # Ignorar archivos .mat del dataset
 Dataset_and_Models/Dataset4 BCICIV/*.mat
 
+# Ignorar archivos binarios de numpy
+*.npz
+
 # Ignorar salidas del Build de STM32CubeIDE (todos los proyectos dentro de ST_Workspace/)
 ST_Workspace/**/Debug/
 ST_Workspace/**/Release/
