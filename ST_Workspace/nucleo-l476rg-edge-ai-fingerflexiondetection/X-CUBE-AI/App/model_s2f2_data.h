@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    model_s2f1_data.h
+  * @file    model_s2f2_data.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    2025-06-30T08:36:28-0400
+  * @date    2025-06-30T08:36:46-0400
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * Copyright (c) 2025 STMicroelectronics.
@@ -14,68 +14,68 @@
   ******************************************************************************
   */
 
-#ifndef MODEL_S2F1_DATA_H
-#define MODEL_S2F1_DATA_H
+#ifndef MODEL_S2F2_DATA_H
+#define MODEL_S2F2_DATA_H
 
-#include "model_s2f1_config.h"
-#include "model_s2f1_data_params.h"
-
-AI_DEPRECATED
-#define AI_MODEL_S2F1_DATA_ACTIVATIONS(ptr_)  \
-  ai_model_s2f1_data_activations_buffer_get(AI_HANDLE_PTR(ptr_))
+#include "model_s2f2_config.h"
+#include "model_s2f2_data_params.h"
 
 AI_DEPRECATED
-#define AI_MODEL_S2F1_DATA_WEIGHTS(ptr_)  \
-  ai_model_s2f1_data_weights_buffer_get(AI_HANDLE_PTR(ptr_))
+#define AI_MODEL_S2F2_DATA_ACTIVATIONS(ptr_)  \
+  ai_model_s2f2_data_activations_buffer_get(AI_HANDLE_PTR(ptr_))
+
+AI_DEPRECATED
+#define AI_MODEL_S2F2_DATA_WEIGHTS(ptr_)  \
+  ai_model_s2f2_data_weights_buffer_get(AI_HANDLE_PTR(ptr_))
 
 
 AI_API_DECLARE_BEGIN
 
 
-extern const ai_u64 s_model_s2f1_weights_array_u64[19577];
+extern const ai_u64 s_model_s2f2_weights_array_u64[19577];
 
 
 
 /*!
  * @brief Get network activations buffer initialized struct.
- * @ingroup model_s2f1_data
+ * @ingroup model_s2f2_data
  * @param[in] ptr a pointer to the activations array storage area
  * @return an ai_buffer initialized struct
  */
 AI_DEPRECATED
 AI_API_ENTRY
-ai_buffer ai_model_s2f1_data_activations_buffer_get(const ai_handle ptr);
+ai_buffer ai_model_s2f2_data_activations_buffer_get(const ai_handle ptr);
 
 /*!
  * @brief Get network weights buffer initialized struct.
- * @ingroup model_s2f1_data
+ * @ingroup model_s2f2_data
  * @param[in] ptr a pointer to the weights array storage area
  * @return an ai_buffer initialized struct
  */
 AI_DEPRECATED
 AI_API_ENTRY
-ai_buffer ai_model_s2f1_data_weights_buffer_get(const ai_handle ptr);
+ai_buffer ai_model_s2f2_data_weights_buffer_get(const ai_handle ptr);
 
 /*!
  * @brief Get network weights array pointer as a handle ptr.
- * @ingroup model_s2f1_data
+ * @ingroup model_s2f2_data
  * @return a ai_handle pointer to the weights array
  */
 AI_DEPRECATED
 AI_API_ENTRY
-ai_handle ai_model_s2f1_data_weights_get(void);
+ai_handle ai_model_s2f2_data_weights_get(void);
 
 
 /*!
  * @brief Get network params configuration data structure.
- * @ingroup model_s2f1_data
+ * @ingroup model_s2f2_data
  * @return true if a valid configuration is present, false otherwise
  */
 AI_API_ENTRY
-ai_bool ai_model_s2f1_data_params_get(ai_network_params* params);
+ai_bool ai_model_s2f2_data_params_get(ai_network_params* params);
 
 
 AI_API_DECLARE_END
 
-#endif /* MODEL_S2F1_DATA_H */
+#endif /* MODEL_S2F2_DATA_H */
 

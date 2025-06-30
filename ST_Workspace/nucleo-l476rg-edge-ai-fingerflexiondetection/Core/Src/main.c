@@ -22,6 +22,16 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdio.h>
+#include <stdint.h>  // Para evitar advertencias de int8 o uint8
+
+#include "ai_datatypes_defines.h"
+#include "ai_platform.h"
+#include "model_s2f1.h"
+#include "model_s2f1_data.h"
+
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,6 +41,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define VERBOSE 1   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
 
 /* USER CODE END PD */
 
@@ -45,6 +57,11 @@ TIM_HandleTypeDef htim16;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
+
+uint8_t rx_indx;
+uint8_t rx_char;
+float32 rx_data[RX_DATA_SIZE]; // Voy a tener que pensar bien de qué tamaño tengo que hacerlo para recibir 1159 float32
+
 
 /* USER CODE END PV */
 
@@ -70,6 +87,49 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+
+	char buf[50];
+	int buf_len = 0;
+	ai_error ai_err;
+	ai_i32 nbatch;
+	uint32_t timestamp;
+	float y_val;
+
+	// Espacio de memoria para guardar calculos intermedios (usando variables definidas por Cube.IA, no por mi)
+	AI_ALIGNED(4) ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
+
+	// Buffers para los tensores de entradas y salidas
+	AI_ALIGNED(4) ai_float in_data[AI_SINE_MODEL_IN_1_SIZE]; // Esto espera flotante de 32 bits
+	AI_ALIGNED(4) ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE];
+
+	ai_handle sine_model = AI_HANDLE_NULL;
+
+	// Para guardar punteros hacia los datos
+	ai_buffer ai_input[AI_SINE_MODEL_IN_NUM];
+	ai_buffer ai_output[AI_SINE_MODEL_OUT_NUM];
+
+	ai_shape_dimension input_shape_data[4] = {1, 1, 1, 1};
+	ai_shape_dimension output_shape_data[4] = {1, 1, 1, 1};
+
+
+	// Set working memory and get weights/bias from model
+	ai_network_params ai_params = {
+		.params = AI_SINE_MODEL_DATA_WEIGHTS(ai_sine_model_data_weights_get()),
+		.activations = AI_SINE_MODEL_DATA_ACTIVATIONS(activations),
+	};
+
+	// Pointer wrapper structs to data buffers
+	ai_input[0].data = AI_HANDLE_PTR(in_data);
+	ai_input[0].shape.size = 4;
+	ai_input[0].shape.data = input_shape_data;
+	ai_input[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	ai_output[0].data = AI_HANDLE_PTR(out_data);
+	ai_output[0].shape.size = 4;
+	ai_output[0].shape.data = output_shape_data;
+	ai_output[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+
 
   /* USER CODE END 1 */
 

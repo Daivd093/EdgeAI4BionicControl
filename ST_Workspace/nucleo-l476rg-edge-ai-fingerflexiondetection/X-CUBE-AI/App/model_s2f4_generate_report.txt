@@ -1,24 +1,24 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-06-30 08:36:29
-Parameters            : generate --target stm32l4 --name model_s2f1 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f1_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace429593248093007968251363140289096 --output C:/Users/david/.stm32cubemx/model_s2f1_output
+Created date          : 2025-06-30 08:37:19
+Parameters            : generate --target stm32l4 --name model_s2f4 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f4_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace4300944375500015901285184539512283 --output C:/Users/david/.stm32cubemx/model_s2f4_output
 
 Exec/report summary (generate)
 -------------------------------------------------------------------------------------------------------------------------------------------
-model file         :   C:\Users\david\Documents\Edging\Repo\EdgeAI4BionicControl\Dataset_and_Models\models\tflite\model_s2f1_int8.tflite   
+model file         :   C:\Users\david\Documents\Edging\Repo\EdgeAI4BionicControl\Dataset_and_Models\models\tflite\model_s2f4_int8.tflite   
 type               :   tflite                                                                                                              
-c_name             :   model_s2f1                                                                                                          
+c_name             :   model_s2f4                                                                                                          
 compression        :   none                                                                                                                
 options            :   allocate-inputs, allocate-outputs                                                                                   
 optimization       :   balanced                                                                                                            
 target/series      :   stm32l4                                                                                                             
-workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace429593248093007968251363140289096                                   
-output dir         :   C:\Users\david\.stm32cubemx\model_s2f1_output                                                                       
+workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace4300944375500015901285184539512283                                  
+output dir         :   C:\Users\david\.stm32cubemx\model_s2f4_output                                                                       
 model_fmt          :   ss/sa per tensor                                                                                                    
-model_name         :   model_s2f1_int8                                                                                                     
-model_hash         :   0xdc0d7c5a72d0f66030703bda373d256c                                                                                  
+model_name         :   model_s2f4_int8                                                                                                     
+model_hash         :   0x98bb63a4c0a087a296b0a335cfc9763d                                                                                  
 params #           :   156,033 items (152.94 KiB)                                                                                          
 -------------------------------------------------------------------------------------------------------------------------------------------
-input 1/1          :   'serving_default_de..240_input0', f32(1x1153), 4.50 KBytes, activations                                             
+input 1/1          :   'serving_default_de..249_input0', f32(1x1153), 4.50 KBytes, activations                                             
 output 1/1         :   'conversion_4', f32(1x1), 4 Bytes, activations                                                                      
 macc               :   158,341                                                                                                             
 weights (ro)       :   156,612 B (152.94 KiB) (1 segment) / -467,520(-74.9%) vs float model                                                
@@ -27,32 +27,32 @@ ram (total)        :   4,612 B (4.50 KiB) = 4,612 + 0 + 0
 -------------------------------------------------------------------------------------------------------------------------------------------
 (*) 'input'/'output' buffers can be used from the activations buffer
 
-Model name - model_s2f1_int8
+Model name - model_s2f4_int8
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
 m_id   layer (type,original)                            oshape           param/size             macc                     connected to   | c_size          c_macc              c_type              
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
-0      serving_default_de..240_input0 (Input, )         [b:1,c:1153]                                                                    |                 +2,306(+100.0%)     Conversion_[0]      
-       conversion_0 (Conversion, QUANTIZE)              [b:1,c:1153]                           2,306   serving_default_de..240_input0   |                 -2,306(-100.0%)     
+0      serving_default_de..249_input0 (Input, )         [b:1,c:1153]                                                                    |                 +2,306(+100.0%)     Conversion_[0]      
+       conversion_0 (Conversion, QUANTIZE)              [b:1,c:1153]                           2,306   serving_default_de..249_input0   |                 -2,306(-100.0%)     
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
-1      sequential_75_dense_240_MatMul (Placeholder, )   [b:128,c:1153]   147,584/147,584                                                | +512(+0.3%)     +147,712(+100.0%)   Dense_[1]           
-       sequential_75_dens..VariableOp (Placeholder, )   [b:128]          128/512                                                        | -512(-100.0%)                       
+1      sequential_78_dense_249_MatMul (Placeholder, )   [b:128,c:1153]   147,584/147,584                                                | +512(+0.3%)     +147,712(+100.0%)   Dense_[1]           
+       sequential_78_dens..VariableOp (Placeholder, )   [b:128]          128/512                                                        | -512(-100.0%)                       
        gemm_1 (Gemm, FULLY_CONNECTED)                   [b:1,c:128]                          147,712                     conversion_0   |                 -147,712(-100.0%)   
-                                                                                                       sequential_75_dense_240_MatMul   | 
-                                                                                                       sequential_75_dens..VariableOp   | 
+                                                                                                       sequential_78_dense_249_MatMul   | 
+                                                                                                       sequential_78_dens..VariableOp   | 
        nl_1_nl (Nonlinearity, FULLY_CONNECTED)          [b:1,c:128]                              128                           gemm_1   |                 -128(-100.0%)       
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
-2      sequential_75_dense_241_MatMul (Placeholder, )   [b:64,c:128]     8,192/8,192                                                    | +256(+3.1%)     +8,256(+100.0%)     Dense_[2]           
-       sequential_75_dens..VariableOp (Placeholder, )   [b:64]           64/256                                                         | -256(-100.0%)                       
+2      sequential_78_dense_250_MatMul (Placeholder, )   [b:64,c:128]     8,192/8,192                                                    | +256(+3.1%)     +8,256(+100.0%)     Dense_[2]           
+       sequential_78_dens..VariableOp (Placeholder, )   [b:64]           64/256                                                         | -256(-100.0%)                       
        gemm_2 (Gemm, FULLY_CONNECTED)                   [b:1,c:64]                             8,256                          nl_1_nl   |                 -8,256(-100.0%)     
-                                                                                                       sequential_75_dense_241_MatMul   | 
-                                                                                                       sequential_75_dens..VariableOp   | 
+                                                                                                       sequential_78_dense_250_MatMul   | 
+                                                                                                       sequential_78_dens..VariableOp   | 
        nl_2_nl (Nonlinearity, FULLY_CONNECTED)          [b:1,c:64]                                64                           gemm_2   |                 -64(-100.0%)        
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
-3      sequential_75_dense_242_MatMul (Placeholder, )   [b:1,c:64]       64/64                                                          | +4(+6.2%)       +65(+100.0%)        Dense_[3]           
-       sequential_75_dens..VariableOp (Placeholder, )   [b:1]            1/4                                                            | -4(-100.0%)                         
+3      sequential_78_dense_251_MatMul (Placeholder, )   [b:1,c:64]       64/64                                                          | +4(+6.2%)       +65(+100.0%)        Dense_[3]           
+       sequential_78_dens..VariableOp (Placeholder, )   [b:1]            1/4                                                            | -4(-100.0%)                         
        gemm_3 (Gemm, FULLY_CONNECTED)                   [b:1,c:1]                                 65                          nl_2_nl   |                 -65(-100.0%)        
-                                                                                                       sequential_75_dense_242_MatMul   | 
-                                                                                                       sequential_75_dens..VariableOp   | 
+                                                                                                       sequential_78_dense_251_MatMul   | 
+                                                                                                       sequential_78_dens..VariableOp   | 
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
 4      conversion_4 (Conversion, DEQUANTIZE)            [b:1,c:1]                                  2                           gemm_3   |                                     Conversion_[o][4]   
 ------ ------------------------------------------------ ---------------- ----------------- --------- -------------------------------- --- --------------- ------------------- ------------------- 
@@ -62,14 +62,14 @@ model/c-model: macc=158,533/158,341 -192(-0.1%) weights=156,612/156,612  activat
 
 Generated C-graph summary
 ------------------------------------------------------------------------------------------------------------------------
-model name            : model_s2f1_int8
-c-name                : model_s2f1
+model name            : model_s2f4_int8
+c-name                : model_s2f4
 c-node #              : 5
 c-array #             : 15
 activations size      : 4612 (1 segment)
 weights size          : 156612 (1 segment)
 macc                  : 158341
-inputs                : ['serving_default_dense_240_input0_output']
+inputs                : ['serving_default_dense_249_input0_output']
 outputs               : ['conversion_4_output']
 
 C-Arrays (15)
@@ -90,14 +90,14 @@ c_id   name (*_array)                            item/size       domain/mem-pool
 11     gemm_3_output                             1/1             activations/**default**   s8                    
 12     gemm_3_scratch0                           64/128          activations/**default**   s16                   
 13     gemm_3_weights                            64/64           weights/weights           const s8              
-14     serving_default_dense_240_input0_output   1153/4612       activations/**default**   float       /input    
+14     serving_default_dense_249_input0_output   1153/4612       activations/**default**   float       /input    
 ------ ----------------------------------------- --------------- ------------------------- ----------- --------- 
 
 C-Layers (5)
 ------ ---------------- ---- ------------- -------- -------- -------------------------------------------- -------------------- 
 c_id   name (*_layer)   id   layer_type    macc     rom      tensors                                      shape (array id)     
 ------ ---------------- ---- ------------- -------- -------- -------------------------------------------- -------------------- 
-0      conversion_0     0    Conversion    2306     0        I: serving_default_dense_240_input0_output   f32(1x1153) (14)     
+0      conversion_0     0    Conversion    2306     0        I: serving_default_dense_249_input0_output   f32(1x1153) (14)     
                                                              O: conversion_0_output                       int8(1x1153) (0)     
 ------ ---------------- ---- ------------- -------- -------- -------------------------------------------- -------------------- 
 1      gemm_1           1    Dense         147712   148096   I: conversion_0_output                       int8(1x1153) (0)     
@@ -148,10 +148,10 @@ Complexity report (model)
 ------ ---------------------------------- ------------------------- ------------------------- ------ 
 m_id   name                               c_macc                    c_rom                     c_id   
 ------ ---------------------------------- ------------------------- ------------------------- ------ 
-0      serving_default_dense_240_input0   |                  1.5%   |                  0.0%   [0]    
-1      sequential_75_dense_240_MatMul     ||||||||||||||||  93.3%   ||||||||||||||||  94.6%   [1]    
-2      sequential_75_dense_241_MatMul     |                  5.2%   |                  5.4%   [2]    
-3      sequential_75_dense_242_MatMul     |                  0.0%   |                  0.0%   [3]    
+0      serving_default_dense_249_input0   |                  1.5%   |                  0.0%   [0]    
+1      sequential_78_dense_249_MatMul     ||||||||||||||||  93.3%   ||||||||||||||||  94.6%   [1]    
+2      sequential_78_dense_250_MatMul     |                  5.2%   |                  5.4%   [2]    
+3      sequential_78_dense_251_MatMul     |                  0.0%   |                  0.0%   [3]    
 4      conversion_4                       |                  0.0%   |                  0.0%   [4]    
 ------ ---------------------------------- ------------------------- ------------------------- ------ 
 macc=158,341 weights=156,612 act=4,612 ram_io=0
@@ -161,8 +161,8 @@ macc=158,341 weights=156,612 act=4,612 ram_io=0
  module                             text    rodata    data     bss 
  ------------------------------ -------- --------- ------- ------- 
  NetworkRuntime1010_CM4_GCC.a      9,312         0       0       0 
- model_s2f1.o                        572       187   1,824     128 
- model_s2f1_data.o                    48        16      88       0 
+ model_s2f4.o                        572       187   1,824     128 
+ model_s2f4_data.o                    48        16      88       0 
  lib (toolchain)*                  3,580        24       0       0 
  ------------------------------ -------- --------- ------- ------- 
  RT total**                       13,512       227   1,912     128 
@@ -189,10 +189,10 @@ macc=158,341 weights=156,612 act=4,612 ram_io=0
 
 Generated files (7)
 ------------------------------------------------------------------------ 
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1_data_params.h   
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1_data_params.c   
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1_data.h          
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1_data.c          
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1_config.h        
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1.h               
-C:\Users\david\.stm32cubemx\model_s2f1_output\model_s2f1.c               
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4_data_params.h   
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4_data_params.c   
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4_data.h          
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4_data.c          
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4_config.h        
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4.h               
+C:\Users\david\.stm32cubemx\model_s2f4_output\model_s2f4.c               

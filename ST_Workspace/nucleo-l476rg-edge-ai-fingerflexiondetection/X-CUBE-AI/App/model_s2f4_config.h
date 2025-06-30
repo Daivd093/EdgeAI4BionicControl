@@ -1,9 +1,9 @@
 
 /**
   ******************************************************************************
-  * @file    model_s2f1_config.h
+  * @file    model_s2f4_config.h
   * @author  AST Embedded Analytics Research Platform
-  * @date    2025-06-30T08:36:28-0400
+  * @date    2025-06-30T08:37:17-0400
   * @brief   AI Tool Automatic Code Generator for Custom Layers Implementation
   ******************************************************************************
   * @attention
@@ -17,8 +17,8 @@
   ******************************************************************************
   */
 
-#ifndef AI_MODEL_S2F1_CONFIG_H
-#define AI_MODEL_S2F1_CONFIG_H
+#ifndef AI_MODEL_S2F4_CONFIG_H
+#define AI_MODEL_S2F4_CONFIG_H
 
 #undef AI_TOOLS_VERSION_MAJOR
 #undef AI_TOOLS_VERSION_MINOR
@@ -43,4 +43,4 @@
 #define AI_TOOLS_API_VERSION_MINOR (5)
 #define AI_TOOLS_API_VERSION_MICRO (0)
 
-#endif /*AI_MODEL_S2F1_CONFIG_H*/
+#endif /*AI_MODEL_S2F4_CONFIG_H*/
