@@ -1,8 +1,8 @@
 # Ignorar Logs
 *.log
 
-# Ignorar archivos .mat del dataset
-Dataset_and_Models/Dataset4 BCICIV/*.mat
+# Ignorar archivos .mat
+*.mat
 
 # Ignorar archivos binarios de numpy
 *.npz
