@@ -84,7 +84,7 @@ def Avg_Freq(x, fi, ff,fs=1000):
     tdomain=rfftfreq(N,1/fs)  
     indices = np.where((tdomain>=fi) & (tdomain<=ff))[0]
     if len(indices) == 0:
-        loggingg.warning(f"Sin datos en rango {fi}-{ff} Hz")
+        logging.warning(f"Sin datos en rango {fi}-{ff} Hz")
         return 0.0  # o np.nan
   
     return np.mean(np.abs(freq_sig[indices]))
