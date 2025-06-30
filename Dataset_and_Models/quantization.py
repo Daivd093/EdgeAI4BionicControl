@@ -23,7 +23,8 @@ logging.basicConfig(
     filename=logfile,     # nombre del archivo de log
     level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filemode='w'  # o 'a' para agregar sin sobrescribir
+    filemode='w',  # o 'a' para agregar sin sobrescribir
+    encoding='utf-8' # Para los tildes
 )
 
 logging.info("======================Inicio======================")
@@ -59,9 +60,11 @@ from utils import  get_windowed_feats, get_windowed_dg, create_R_matrix
 # Train / Test split
 
 #----------SUBJECT 2--------------
-s = 2
+s = int(input("¿Para qué sujeto quiere hacer la cuantización? [1/2/3]: "))
 
-filename = "Dataset4_BCICIV/sub2_processed.npz"
+
+
+filename = f"Dataset4_BCICIV/sub{s}_processed.npz"
 logging.info(f"Esta versión va a intentar cargar {filename}, si no lo logra, va a hacer el preprocesamiento del dataset.")
 logging.debug("Por ahora solo soporta utilizar al sujeto 2, luego puede ser que agregue algo para seleccionar al sujeto.")
 
@@ -78,7 +81,7 @@ except:
     logging.info("No se pudo cargar dataset preprocesado")
     print("No se pudo")
     
-    subject = loadmat(f'Dataset4_BCICIV/sub{str(s)}_comp.mat')
+    subject = loadmat(f'Dataset4_BCICIV/sub{s}_comp.mat')
     
     train_dg = subject['train_dg']
     train_data = subject['train_data']
@@ -151,11 +154,13 @@ def representative_dataset_gen():
 
 model_dir = "models/"
 tflite_dir = "tflite/"
-model_names = f"model_s{str(s)}f"
-finger_idx = [1,2,3,4,5]
 
-for f in finger_idx:
-    model = tf.keras.models.load_model(model_dir+model_names+str(f)+'.h5')
+model_format = lambda s,f,e : f"model_s{s}f{f}.{e}"
+
+for finger in range(5):
+
+    filename_in = model_dir+model_format(s,finger+1,'h5')
+    model = tf.keras.models.load_model(filename_in)
     
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.DEFAULT]
@@ -163,5 +168,8 @@ for f in finger_idx:
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
     tflite_model = converter.convert()
     
-    with open(model_dir+tflite_dir+model_names+str(f)+'_int8_justweights'+'.tflite', "wb") as f:
+    filename_out = model_dir+tflite_dir+model_format(s,str(finger+1)+'_int8','tflite') 
+    with open(filename_out, "wb") as f:
         f.write(tflite_model)
+    
+    logging.info(f"{filename_out} Creado con éxito!")

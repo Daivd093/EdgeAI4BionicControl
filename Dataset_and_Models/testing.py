@@ -29,7 +29,8 @@ logging.basicConfig(
     filename=logdir+'prueba_ecog.log',     # nombre del archivo de log
     level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filemode='w'  # o 'a' para agregar sin sobrescribir
+    filemode='w',  # o 'a' para agregar sin sobrescribir
+    encoding='utf-8'
 )
 def main():
     logging.info("======================Inicio======================")

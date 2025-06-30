@@ -8,8 +8,10 @@ Este archivo está basado en la implementación de raimasen1729
 https://github.com/raimasen1729/Finger-Flexion-Detection-Using-ECoG-Signal/tree/main
 para detectar la flexión de un dedo usando señales ECoG.
 
-La versión actual solo considera al sujeto 1 y genera 5 redes neuronales independientes
-para predecir la posición de cada uno de sus dedos.
+La versión actual permite escoger al sujeto 1, 2 o 3 y genera 5 redes neuronales independientes
+para predecir la posición de cada uno de los dedos del sujeto escogido.
+
+El sujeto 3 tiene un muy mal desempeño, aún no estoy seguro de la razón.
 
 Se hizo usando  Python 3.9.18
                 Scipy 1.13.1
@@ -19,7 +21,6 @@ Se hizo usando  Python 3.9.18
                 scikit-learn 1.6.1
 
                 
-Estoy usando subject2 como si fuese subject1, luego lo arreglaré
 """
 import time
 START_TIME = time.time()
@@ -48,7 +49,8 @@ logging.basicConfig(
     filename=logfile,     # nombre del archivo de log
     level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filemode='w'  # o 'a' para agregar sin sobrescribir
+    filemode='w',  # o 'a' para agregar sin sobrescribir
+    encoding='utf-8'
 )
 
 logging.info("======================Inicio======================")
