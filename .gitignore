@@ -11,6 +11,9 @@
 *.tflite
 *.h5
 
+# Ignorar los scalers
+*.save
+
 # Ignorar salidas del Build de STM32CubeIDE (todos los proyectos dentro de ST_Workspace/)
 ST_Workspace/**/Debug/
 ST_Workspace/**/Release/

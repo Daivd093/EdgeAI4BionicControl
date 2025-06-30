@@ -73,7 +73,7 @@ logging.info(f'MatPlotLib {plt.matplotlib.__version__}')
 
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Dropout
 from tensorflow.keras.losses import Huber
@@ -95,12 +95,14 @@ from utils import  get_windowed_feats, get_windowed_dg, create_R_matrix
 
 # Train / Test split
 
-#----------SUBJECT 2--------------
-s = 2
+#----------SUBJECT--------------
+s = int(input("¿Para qué sujeto del dataset 4 de la competencia BCI IV quiere realizar el entrenamiento? [1/2/3] ")) # Me dio flojera hacer algo más robusto ahora
 
-filename = "Dataset4_BCICIV/sub2_processed.npz"
+filename = f"Dataset4_BCICIV/sub{s}_processed.npz"
 logging.info(f"Esta versión va a intentar cargar {filename}, si no lo logra, va a hacer el preprocesamiento del dataset.")
-logging.debug("Por ahora solo soporta utilizar al sujeto 2, luego puede ser que agregue algo para seleccionar al sujeto.")
+
+
+test_data_shape_0 = 200000 # Debería haber incluído este dato en el .npz, por ahora va hardcodeado no más
 
 
 try:
@@ -109,6 +111,7 @@ try:
         R_test=data['R_test']
         y_train=data["y_train"]
         y_test=data["y_test"]
+        test_data_shape_0 = data["test_data_shape_0"]
     logging.info(f"Dataset preprocesado cargado desde {filename} con éxito!")
     print("Si se pudo")
 except:
@@ -138,8 +141,7 @@ except:
         logging.error("El sujeto no existe")
         # Probablemente debería poner algo para detener el programa sin que tire un error
     
-    
-    
+    test_data_shape_0 = test_data.shape[0]
     
     fs = 1000 #Hz
     
@@ -182,12 +184,8 @@ except:
 def build_model():
     model = Sequential()
     model.add(Dense(128, input_dim = R_train.shape[1], activation = 'relu', kernel_regularizer=l2(1e-4)))
-    model.add(Dropout(0.2))
-    model.add(Dense(256, activation = 'relu', kernel_regularizer=l2(1e-4)))
-    model.add(Dropout(0.3))
-    model.add(Dense(256, activation = 'relu', kernel_regularizer=l2(1e-4)))
-    model.add(Dropout(0.3))
-    model.add(Dense(256, activation = 'relu', kernel_regularizer=l2(1e-4)))
+    model.add(Dropout(0.4))
+    model.add(Dense(64, activation = 'relu', kernel_regularizer=l2(1e-3)))
     model.add(Dropout(0.2))
     model.add(Dense(1, activation = 'linear'))
 
@@ -199,9 +197,8 @@ def build_model():
 
 # early stopping
 early_stop = EarlyStopping(monitor = 'val_loss', mode = 'min', verbose=1, patience = 25)
-
-
-
+# reducing learning rate
+reduce_lr = ReduceLROnPlateau(monitor='val_loss', patience=10, factor=0.5, verbose=1)
 
 formatted = lambda et : time.strftime("%H:%M:%S", time.gmtime(et))
 
@@ -249,10 +246,10 @@ for finger in range(5):
     model = build_model()
     model.fit(R_train_part, y_train_part[:,finger],
                     validation_data=(R_val_part, y_val_part[:,finger]),
-                    epochs=500, batch_size=32,
-                    callbacks=[early_stop], verbose=1)
+                    epochs=250, batch_size=32,
+                    callbacks=[early_stop, reduce_lr], verbose=1)
     end = time.time()
-    model.save(f'models/model_s{str(s)}f{str(finger+1)}.h5')
+    model.save(f'models/model_s{s}f{str(finger+1)}.h5')
     #predictions
     test_preds.append(model.predict(R_test))
     
@@ -266,7 +263,7 @@ test_pred_s_scaled = np.hstack(test_preds)
 logging.debug(f"test_pred_s_scaled shape: {test_pred_s_scaled.shape}")
 test_pred_s = scaler_y.inverse_transform(test_pred_s_scaled)
 
-xs = np.linspace(0,test_pred_s.shape[0],test_data.shape[0])
+xs = np.linspace(0,test_pred_s.shape[0],test_data_shape_0)
 
 #interpolation
 y = np.empty_like(test_pred_s[:,0]) 

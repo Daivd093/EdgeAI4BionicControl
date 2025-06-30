@@ -27,7 +27,7 @@ for handler in logging.root.handlers[:]:
 
 logging.basicConfig(
     filename=logdir+'prueba_ecog.log',     # nombre del archivo de log
-    level=logging.DEBUG,                    # nivel mínimo a registrar
+    level=logging.INFO,                    # nivel mínimo a registrar
     format='%(asctime)s - %(levelname)s - %(message)s',
     filemode='w'  # o 'a' para agregar sin sobrescribir
 )
@@ -44,10 +44,13 @@ def main():
     logging.info(f'Numpy {np.__version__}')
     logging.info(f'MatPlotLib {plt.matplotlib.__version__}')
     
+
+    s = input("¿Qué sujeto quiere probar? [1/2/3] ")
+
     try:
         logging.info('Cargando archivos')
-        groundtruth_subject1 = loadmat('Dataset4 BCICIV/sub1_testlabels.mat')
-        predicted_subject1 = loadmat('Predictions/subj1_testpredictions.mat')
+        groundtruth_subject1 = loadmat(f'Dataset4_BCICIV/sub{s}_testlabels.mat')
+        predicted_subject1 = loadmat(f'Predictions/subj{s}_testpredictions.mat')
     except Exception as e:
         logging.error("Los archivos no están")
         logging.debug(f"Error: {e}")
@@ -62,11 +65,10 @@ def main():
     # Calcular r por dedo (excluyendo el dedo 4 → índice 3)
     r_values = []
     for i in range(5):
-        if i == 3:
-            continue  # saltar dedo 4
         r, _ = pearsonr(true_dg[:, i], nn_dg[:, i])
-        logging.debug(f"Coeficiente de pearson para el dedo {i}: {r}")
-        r_values.append(r)
+        logging.info(f"Coeficiente de pearson para el dedo {i+1}: {r}")
+        if i != 3:
+            r_values.append(r)
     
     # Promedio de los coeficientes de correlación
     r_mean = np.mean(r_values)

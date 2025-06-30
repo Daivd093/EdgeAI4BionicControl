@@ -60,14 +60,6 @@ import os
 
 import scipy
 from scipy.io import loadmat
-from scipy import signal as sig
-from scipy.signal import filtfilt
-from scipy.signal import firwin
-from scipy.signal import kaiserord
-from copy import deepcopy
-from scipy.fft import rfft, rfftfreq
-from scipy.interpolate import CubicSpline
-from scipy.io import savemat
 logging.info(f'Scipy {scipy.__version__}')
 
 import numpy as np
@@ -97,8 +89,11 @@ testlabels = loadmat(testlabels_file)
 test_dg = testlabels['test_dg']
 
 Remove = input("¿Qué canales deseas eliminar? [54/20 37/]\n(Si quiere más se uno, separe los números con un espacio y si no quiere ninguno, no ingrese nada)")
-Remove = Remove.split(" ")
-Remove = [int(cr) for cr in Remove]
+if Remove != '':
+    Remove = Remove.split(" ")
+    Remove = [int(cr) for cr in Remove]
+else:
+    Remove = []
 logging.info(f"Se eliminarán los canales {Remove}")
 
 
@@ -161,7 +156,7 @@ logging.debug("y_test convertido a float32")
 
 
 filename = f"{dataset_dir}sub{subject}_processed.npz"
-np.savez(filename,R_train=R_train,R_test=R_test,y_train=y_train,y_test=y_test)
+np.savez(filename,R_train=R_train,R_test=R_test,y_train=y_train,y_test=y_test,test_data_shape_0=test_data.shape[0])
 logging.info(f"Guardados en {filename}")
 
 
