@@ -67,11 +67,17 @@ import matplotlib.pyplot as plt
 logging.info(f'Numpy {np.__version__}')
 logging.info(f'MatPlotLib {plt.matplotlib.__version__}')
 
+import sklearn
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler #standard scaler worked best
+logging.info(f'scikit-learn {sklearn.__version__}')
+
+import joblib
 
 from utils import get_windowed_feats, get_windowed_dg, create_R_matrix
 
 dataset_dir = "Dataset4_BCICIV/" # Luego debería estandarizar esto para que todo se corra desde root o todo desde la carpeta en la que está
-subject = input("¿Para qué sujeto del dataset 4 de la competencia BCI IV quiere hacer la conversión? [1/2/3]?")
+subject = input("¿Para qué sujeto del dataset 4 de la competencia BCI IV quiere hacer la conversión? [1/2/3]? ")
 assert subject in ["1","2","3"]
 
 dataset_file = f"{dataset_dir}sub{subject}_comp.mat"
@@ -88,7 +94,7 @@ train_dg = dataset ['train_dg']
 testlabels = loadmat(testlabels_file)
 test_dg = testlabels['test_dg']
 
-Remove = input("¿Qué canales deseas eliminar? [54/20 37/]\n(Si quiere más se uno, separe los números con un espacio y si no quiere ninguno, no ingrese nada)")
+Remove = input("¿Qué canales deseas eliminar? [54/20 37/]\n(Si quiere más se uno, separe los números con un espacio y si no quiere ninguno, no ingrese nada) ")
 if Remove != '':
     Remove = Remove.split(" ")
     Remove = [int(cr) for cr in Remove]
@@ -137,6 +143,26 @@ y_test = get_windowed_dg(test_dg, 25, 7, 2)
 logging.info('y_test Listo!')
 logging.debug(f"y_test shape: {y_test.shape}")
 
+
+
+logging.info('Se aplica StandardScaler a R usando R_train')
+scaler_R = StandardScaler()
+R_train = scaler_R.fit_transform(R_train)
+R_test = scaler_R.transform(R_test)
+
+scaler_R_filename = f"scaler_R_{subject}.save"
+joblib.dump(scaler_R, scaler_R_filename) 
+logging.info(f"Se guarda el StandardScaler de R en {scaler_R_filename}")
+
+
+
+logging.info('Se aplica MinMaxScaler a y_train')
+scaler_y = MinMaxScaler()
+y_train = scaler_y.fit_transform(y_train)
+
+scaler_y_filename = f"scaler_y_{subject}.save"
+joblib.dump(scaler_y, scaler_y_filename) 
+logging.info(f"Se guarda el MinMaxScaler de y en {scaler_y_filename}")
 
 
 

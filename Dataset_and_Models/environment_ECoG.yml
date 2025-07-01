@@ -10,3 +10,5 @@ dependencies:
   - tensorflow
   - spyder
   - matplotlib
+  - pip:
+      - pyserial

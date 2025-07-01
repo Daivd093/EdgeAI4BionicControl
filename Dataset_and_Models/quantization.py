@@ -66,7 +66,6 @@ s = int(input("¿Para qué sujeto quiere hacer la cuantización? [1/2/3]: "))
 
 filename = f"Dataset4_BCICIV/sub{s}_processed.npz"
 logging.info(f"Esta versión va a intentar cargar {filename}, si no lo logra, va a hacer el preprocesamiento del dataset.")
-logging.debug("Por ahora solo soporta utilizar al sujeto 2, luego puede ser que agregue algo para seleccionar al sujeto.")
 
 
 try:
@@ -146,7 +145,7 @@ except:
 # Generamos el dataset representativo
 
 def representative_dataset_gen():
-    for i in range(100):
+    for i in range(300):
         sample = R_train[i:i+1, :]  # batch de 1 muestra, las primeras 100 filas
         yield [sample.astype(np.float32)]
 

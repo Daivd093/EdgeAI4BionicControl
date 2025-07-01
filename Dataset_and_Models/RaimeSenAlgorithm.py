@@ -115,6 +115,11 @@ try:
         y_test=data["y_test"]
         test_data_shape_0 = data["test_data_shape_0"]
     logging.info(f"Dataset preprocesado cargado desde {filename} con éxito!")
+    
+    scaler_y_filename = f"scaler_y_{s}.save"
+    scaler_y = joblib.load(scaler_y_filename)
+    logging.info(f"scaler_y cargado desde {scaler_y_filename} con éxito!")
+
     print("Si se pudo")
 except:
     logging.info("No se pudo cargar dataset preprocesado")
@@ -180,6 +185,22 @@ except:
     logging.info('R_test Listo!')
     logging.debug(f"R_test shape: {R_test.shape}")
     
+    logging.info('Se aplica StandardScaler a R usando R_train')
+    scaler = StandardScaler()
+    R_train = scaler.fit_transform(R_train)
+
+    scaler_filename = f"scaler_R_{s}.save"
+    joblib.dump(scaler, scaler_filename) 
+
+    R_test = scaler.transform(R_test)
+    logging.info('Se aplica MinMaxScaler a y_train')
+
+    scaler_y = MinMaxScaler()
+    y_train = scaler_y.fit_transform(y_train)
+
+    scaler_y_filename = f"scaler_y_{s}.save"
+    joblib.dump(scaler_y, scaler_y_filename) 
+
 
 # Neural Network
 
@@ -203,21 +224,6 @@ early_stop = EarlyStopping(monitor = 'val_loss', mode = 'min', verbose=1, patien
 reduce_lr = ReduceLROnPlateau(monitor='val_loss', patience=10, factor=0.5, verbose=1)
 
 formatted = lambda et : time.strftime("%H:%M:%S", time.gmtime(et))
-
-#----------SUBJECT-------------
-
-logging.info('Se aplica StandardScaler a R usando R_train')
-scaler = StandardScaler()
-R_train = scaler.fit_transform(R_train)
-
-scaler_filename = f"scaler{str(s)}.save"
-joblib.dump(scaler, scaler_filename) 
-
-R_test = scaler.transform(R_test)
-logging.info('Se aplica MinMaxScaler a y_train')
-
-scaler_y = MinMaxScaler()
-y_train = scaler_y.fit_transform(y_train)
 
 
 logging.info("Se hace split temporal dividiendo 90/10 train/val")
