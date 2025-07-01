@@ -1,6 +1,6 @@
 ST Edge AI Core v2.1.0-20194 329b0e98d
-Created date          : 2025-06-30 08:37:19
-Parameters            : generate --target stm32l4 --name model_s2f4 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f4_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace4300944375500015901285184539512283 --output C:/Users/david/.stm32cubemx/model_s2f4_output
+Created date          : 2025-07-01 08:24:10
+Parameters            : generate --target stm32l4 --name model_s2f4 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f4_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace329474352056002817683031921657747 --output C:/Users/david/.stm32cubemx/model_s2f4_output
 
 Exec/report summary (generate)
 -------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,11 +11,11 @@ compression        :   none
 options            :   allocate-inputs, allocate-outputs                                                                                   
 optimization       :   balanced                                                                                                            
 target/series      :   stm32l4                                                                                                             
-workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace4300944375500015901285184539512283                                  
+workspace dir      :   C:\Users\david\AppData\Local\Temp\mxAI_workspace329474352056002817683031921657747                                   
 output dir         :   C:\Users\david\.stm32cubemx\model_s2f4_output                                                                       
 model_fmt          :   ss/sa per tensor                                                                                                    
 model_name         :   model_s2f4_int8                                                                                                     
-model_hash         :   0x98bb63a4c0a087a296b0a335cfc9763d                                                                                  
+model_hash         :   0xd40d109e7c1fccba2581b8a91305db88                                                                                  
 params #           :   156,033 items (152.94 KiB)                                                                                          
 -------------------------------------------------------------------------------------------------------------------------------------------
 input 1/1          :   'serving_default_de..249_input0', f32(1x1153), 4.50 KBytes, activations                                             

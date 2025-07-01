@@ -42,8 +42,6 @@ import os
 
 
 import scipy
-from scipy.io import loadmat
-from scipy.interpolate import CubicSpline
 from scipy.io import savemat
 logging.info(f'Scipy {scipy.__version__}')
 
@@ -87,22 +85,23 @@ ser = serial.Serial(puerto, baudrate, timeout=1)
 
 logging.warning("Esta cosa está funcionando a penas y luego será corregido")
 
+# Saludo
+respuesta = ser.readline().decode()
+while respuesta:
+    #print(respuesta)
+    respuesta = ser.readline().decode()
+    
+# Envía tamaño
+ser.write(f"{N:04}".encode())
+
+# Espera recibir
+respuesta = ser.readline().decode()
+while respuesta:
+    #print(respuesta)
+    respuesta = ser.readline().decode()
+
+
 for fila in range(L):
-    # Saludo
-    respuesta = ser.readline().decode()
-    while respuesta:
-        print(respuesta)
-        respuesta = ser.readline().decode()
-        
-    # Envía tamaño
-    ser.write(f"{N:04}".encode())
-    
-    # Espera recibir
-    respuesta = ser.readline().decode()
-    while respuesta:
-        print(respuesta)
-        respuesta = ser.readline().decode()
-    
     
     # Envía una fila
     ser.write(R_test[fila].tobytes())
@@ -115,7 +114,7 @@ for fila in range(L):
         pass
 
     while respuesta:
-        print(respuesta)
+        #print(respuesta)
         respuesta = ser.readline().decode()
     
 

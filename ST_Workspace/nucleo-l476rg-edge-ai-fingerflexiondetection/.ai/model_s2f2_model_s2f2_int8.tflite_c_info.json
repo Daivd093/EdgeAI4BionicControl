@@ -488,44 +488,44 @@
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2025-06-30T08:36:46-0400",
+      "generated_time": "2025-06-30T10:55:25-0400",
       "model_files": [
         {
           "name": "model_s2f2_data_params.h",
-          "signature": "0xe1079a76851fc9b984884d92d71dafaf"
+          "signature": "0x436d0e3d536110259f536915ff7b0197"
         },
         {
           "name": "model_s2f2_data_params.c",
-          "signature": "0xc6fe69940522ba0b5accf18305749691"
+          "signature": "0x21322f8822863e35817f335c16d7af26"
         },
         {
           "name": "model_s2f2_data.h",
-          "signature": "0xa9907e36029e224d82c49360fc689e4b"
+          "signature": "0xa6c5676aef44e0b07131681d1e0eb495"
         },
         {
           "name": "model_s2f2_data.c",
-          "signature": "0xde01dd15ea3a8da9a4fb8bed1626e962"
+          "signature": "0xf3b9c929c655fa3ee1db4b5c89c6da0c"
         },
         {
           "name": "model_s2f2_config.h",
-          "signature": "0xf07262d0ef2e2e00d430748f3e4962c2"
+          "signature": "0x4072bb6056c97b073680350fb3dd941e"
         },
         {
           "name": "model_s2f2.h",
-          "signature": "0xcdde785a01da7c046cc55e946f8249bd"
+          "signature": "0xa3b8ad958ae60e045fcdb27fe44969fe"
         },
         {
           "name": "model_s2f2.c",
-          "signature": "0xa295a9afbf9a6f65f3059f329c571e32"
+          "signature": "0x110db3ad70d043111513e2be7356f6c5"
         }
       ],
       "name": "model_s2f2"
     },
-    "network_signature": "0x19aadd0f859ba6ba",
+    "network_signature": "0xf0dca5ece2d8b4a6",
     "test_name": "",
     "tools": [
       {
-        "arguments": "generate --target stm32l4 --name model_s2f2 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f2_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace429767825920003940526626651729722 --output C:/Users/david/.stm32cubemx/model_s2f2_output",
+        "arguments": "generate --target stm32l4 --name model_s2f2 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f2_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace5129664505470018022981758850524670 --output C:/Users/david/.stm32cubemx/model_s2f2_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],

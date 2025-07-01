@@ -15,10 +15,10 @@
       "intq": {
         "axis": 0,
         "offsets": [
-          -128
+          -55
         ],
         "scales": [
-          9473763.0
+          0.06342264264822006
         ]
       },
       "is_param": false,
@@ -107,7 +107,7 @@
           -128
         ],
         "scales": [
-          564159.0
+          0.014135593548417091
         ]
       },
       "is_param": false,
@@ -239,7 +239,7 @@
           -128
         ],
         "scales": [
-          5187.0439453125
+          0.0008326808456331491
         ]
       },
       "is_param": false,
@@ -368,10 +368,10 @@
       "intq": {
         "axis": 0,
         "offsets": [
-          82
+          -128
         ],
         "scales": [
-          4295.576171875
+          0.003646975150331855
         ]
       },
       "is_param": false,
@@ -488,44 +488,44 @@
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2025-06-30T08:36:28-0400",
+      "generated_time": "2025-07-01T08:23:18-0400",
       "model_files": [
         {
           "name": "model_s2f1_data_params.h",
-          "signature": "0x055da4245e93d8c1b3ced003ba6dc9de"
+          "signature": "0x2baa727302d2cac45219c6316526cac2"
         },
         {
           "name": "model_s2f1_data_params.c",
-          "signature": "0x0f4a65a9a759a90e0740054e1608fb2c"
+          "signature": "0x23341b62e83597199a5dad93f89a19bd"
         },
         {
           "name": "model_s2f1_data.h",
-          "signature": "0xc57d56432745a41b0754658f19dd8564"
+          "signature": "0xe8b3dfe91a96d385416c910ca3626ab8"
         },
         {
           "name": "model_s2f1_data.c",
-          "signature": "0xa9cf7e2a7d0d3bd6812b05357d9d2c34"
+          "signature": "0x9b66795779db0ed3e45920eb940ce0a4"
         },
         {
           "name": "model_s2f1_config.h",
-          "signature": "0x397cf79ad29bbc320077c291dee8b87a"
+          "signature": "0xf5d4afaef0ffca743610d403bd616505"
         },
         {
           "name": "model_s2f1.h",
-          "signature": "0xeaadb1981b7abc2208824abdd5f60f3c"
+          "signature": "0x41b7bb8dd028ff27483e9cca381ec0eb"
         },
         {
           "name": "model_s2f1.c",
-          "signature": "0x657588cbec395e15d2a37227d866e4ec"
+          "signature": "0x4603a7f472daddd1efc887ea4a799b5a"
         }
       ],
       "name": "model_s2f1"
     },
-    "network_signature": "0x787c51fdb6f1316e",
+    "network_signature": "0xee02e5e7be578cbe",
     "test_name": "",
     "tools": [
       {
-        "arguments": "generate --target stm32l4 --name model_s2f1 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f1_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace429593248093007968251363140289096 --output C:/Users/david/.stm32cubemx/model_s2f1_output",
+        "arguments": "generate --target stm32l4 --name model_s2f1 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f1_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace328973736644002106719708722240542 --output C:/Users/david/.stm32cubemx/model_s2f1_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],
@@ -533,7 +533,7 @@
           "model_files": [
             {
               "name": "model_s2f1_int8.tflite",
-              "signature": "0xdc0d7c5a72d0f66030703bda373d256c"
+              "signature": "0x5b83477482ff83d5a9f0683f423e9eb4"
             }
           ],
           "n_params": 156033,

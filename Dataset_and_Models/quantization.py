@@ -48,10 +48,11 @@ logging.info(f'Tensorflow {tf.__version__}')
 
 
 import sklearn
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import StandardScaler #standard scaler worked best
 logging.info(f'scikit-learn {sklearn.__version__}')
 
-
-
+import joblib
 
 #Preprocess:
 from utils import  get_windowed_feats, get_windowed_dg, create_R_matrix
@@ -140,6 +141,22 @@ except:
     R_test = create_R_matrix(X_test, 3)
     logging.info('R_test Listo!')
     logging.debug(f"R_test shape: {R_test.shape}")
+    
+    logging.info('Se aplica StandardScaler a R usando R_train')
+    scaler = StandardScaler()
+    R_train = scaler.fit_transform(R_train)
+
+    scaler_filename = f"scaler_R_{s}.save"
+    joblib.dump(scaler, scaler_filename) 
+
+    R_test = scaler.transform(R_test)
+    logging.info('Se aplica MinMaxScaler a y_train')
+
+    scaler_y = MinMaxScaler()
+    y_train = scaler_y.fit_transform(y_train)
+
+    scaler_y_filename = f"scaler_y_{s}.save"
+    joblib.dump(scaler_y, scaler_y_filename) 
     
 
 # Generamos el dataset representativo

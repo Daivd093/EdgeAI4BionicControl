@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    model_s2f1.c
   * @author  AST Embedded Analytics Research Platform
-  * @date    2025-06-30T08:36:28-0400
+  * @date    2025-07-01T08:23:18-0400
   * @brief   AI Tool Automatic Code Generator for Embedded NN computing
   ******************************************************************************
   * @attention
@@ -35,14 +35,14 @@
 #define AI_NET_OBJ_INSTANCE g_model_s2f1
  
 #undef AI_MODEL_S2F1_MODEL_SIGNATURE
-#define AI_MODEL_S2F1_MODEL_SIGNATURE     "0xdc0d7c5a72d0f66030703bda373d256c"
+#define AI_MODEL_S2F1_MODEL_SIGNATURE     "0x5b83477482ff83d5a9f0683f423e9eb4"
 
 #ifndef AI_TOOLS_REVISION_ID
 #define AI_TOOLS_REVISION_ID     ""
 #endif
 
 #undef AI_TOOLS_DATE_TIME
-#define AI_TOOLS_DATE_TIME   "2025-06-30T08:36:28-0400"
+#define AI_TOOLS_DATE_TIME   "2025-07-01T08:23:18-0400"
 
 #undef AI_TOOLS_COMPILE_TIME
 #define AI_TOOLS_COMPILE_TIME    __DATE__ " " __TIME__
@@ -136,14 +136,14 @@ AI_ARRAY_OBJ_DECLARE(
 AI_INTQ_INFO_LIST_OBJ_DECLARE(conversion_0_output_array_intq, AI_STATIC_CONST,
   AI_BUFFER_META_FLAG_SCALE_FLOAT|AI_BUFFER_META_FLAG_ZEROPOINT_S8, 1,
   AI_PACK_INTQ_INFO(
-    AI_PACK_INTQ_SCALE(9473763.0f),
-    AI_PACK_INTQ_ZP(-128)))
+    AI_PACK_INTQ_SCALE(0.06342264264822006f),
+    AI_PACK_INTQ_ZP(-55)))
 
 /* Int quant #1 */
 AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_1_output_array_intq, AI_STATIC_CONST,
   AI_BUFFER_META_FLAG_SCALE_FLOAT|AI_BUFFER_META_FLAG_ZEROPOINT_S8, 1,
   AI_PACK_INTQ_INFO(
-    AI_PACK_INTQ_SCALE(564159.0f),
+    AI_PACK_INTQ_SCALE(0.014135593548417091f),
     AI_PACK_INTQ_ZP(-128)))
 
 /* Int quant #2 */
@@ -157,7 +157,7 @@ AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_1_weights_array_intq, AI_STATIC_CONST,
 AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_2_output_array_intq, AI_STATIC_CONST,
   AI_BUFFER_META_FLAG_SCALE_FLOAT|AI_BUFFER_META_FLAG_ZEROPOINT_S8, 1,
   AI_PACK_INTQ_INFO(
-    AI_PACK_INTQ_SCALE(5187.0439453125f),
+    AI_PACK_INTQ_SCALE(0.0008326808456331491f),
     AI_PACK_INTQ_ZP(-128)))
 
 /* Int quant #4 */
@@ -171,8 +171,8 @@ AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_2_weights_array_intq, AI_STATIC_CONST,
 AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_3_output_array_intq, AI_STATIC_CONST,
   AI_BUFFER_META_FLAG_SCALE_FLOAT|AI_BUFFER_META_FLAG_ZEROPOINT_S8, 1,
   AI_PACK_INTQ_INFO(
-    AI_PACK_INTQ_SCALE(4295.576171875f),
-    AI_PACK_INTQ_ZP(82)))
+    AI_PACK_INTQ_SCALE(0.003646975150331855f),
+    AI_PACK_INTQ_ZP(-128)))
 
 /* Int quant #6 */
 AI_INTQ_INFO_LIST_OBJ_DECLARE(gemm_3_weights_array_intq, AI_STATIC_CONST,
@@ -385,7 +385,7 @@ AI_NETWORK_OBJ_DECLARE(
     4612, NULL, NULL),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_MODEL_S2F1_IN_NUM, &serving_default_dense_240_input0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_MODEL_S2F1_OUT_NUM, &conversion_4_output),
-  &conversion_0_layer, 0x787c51fd, NULL)
+  &conversion_0_layer, 0xee02e5e7, NULL)
 
 #else
 
@@ -405,7 +405,7 @@ AI_NETWORK_OBJ_DECLARE(
   ),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_MODEL_S2F1_IN_NUM, &serving_default_dense_240_input0_output),
   AI_TENSOR_LIST_IO_OBJ_INIT(AI_FLAG_NONE, AI_MODEL_S2F1_OUT_NUM, &conversion_4_output),
-  &conversion_0_layer, 0x787c51fd, NULL)
+  &conversion_0_layer, 0xee02e5e7, NULL)
 
 #endif	/*(AI_TOOLS_API_VERSION < AI_TOOLS_API_VERSION_1_5)*/
 
@@ -522,7 +522,7 @@ ai_bool ai_model_s2f1_get_info(
       .params            = AI_STRUCT_INIT,
       .activations       = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x787c51fd,
+      .signature         = 0xee02e5e7,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;
@@ -570,7 +570,7 @@ ai_bool ai_model_s2f1_get_report(
       .map_weights       = AI_STRUCT_INIT,
       .map_activations   = AI_STRUCT_INIT,
       .n_nodes           = 0,
-      .signature         = 0x787c51fd,
+      .signature         = 0xee02e5e7,
     };
 
     if (!ai_platform_api_get_network_report(network, &r)) return false;

@@ -24,11 +24,20 @@
 
 #include <stdio.h>
 #include <stdint.h>  // Para evitar advertencias de int8 o uint8
+#include <string.h> // Para usar memcpy
 
 #include "ai_datatypes_defines.h"
 #include "ai_platform.h"
 #include "model_s2f1.h"
 #include "model_s2f1_data.h"
+//#include "model_s2f2.h"
+//#include "model_s2f2_data.h"
+//#include "model_s2f3.h"
+//#include "model_s2f3_data.h"
+//#include "model_s2f4.h"
+//#include "model_s2f4_data.h"
+//#include "model_s2f5.h"
+//#include "model_s2f5_data.h"
 
 
 
@@ -42,7 +51,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define VERBOSE 1   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
+#define VERBOSE 0   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
+//#define NUM_INPUTS 1153 // Cantidad de columnas en la matriz R. Por sujeto las opciones son: 1489/1153/1537
+#define INPUT_BITS ( 4 * AI_MODEL_S2F1_IN_1_SIZE ) // Son float32 los datos de entrada
+#define NUM_FINGERS 1 // Idealmente la idea es llegar a 5
 
 /* USER CODE END PD */
 
@@ -52,15 +64,21 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+CRC_HandleTypeDef hcrc;
+
 TIM_HandleTypeDef htim16;
 
 UART_HandleTypeDef huart2;
+DMA_HandleTypeDef hdma_usart2_rx;
 
 /* USER CODE BEGIN PV */
 
-uint8_t rx_indx;
-uint8_t rx_char;
-float32 rx_data[RX_DATA_SIZE]; // Voy a tener que pensar bien de qué tamaño tengo que hacerlo para recibir 1159 float32
+//uint8_t TxData[(4 * NUM_FINGERS)];
+AI_ALIGNED(4) uint8_t RxData[(INPUT_BITS+4)]; // Alineado usando la macro de "ai_platform.h"
+//int isSizeRxed = 0;
+
+uint8_t RxSize[4];
+uint32_t size = 0;
 
 
 /* USER CODE END PV */
@@ -68,14 +86,42 @@ float32 rx_data[RX_DATA_SIZE]; // Voy a tener que pensar bien de qué tamaño te
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM16_Init(void);
+static void MX_CRC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+/*
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+
+	if (isSizeRxed == 0){ // Si no he recibido el tamaño de los datos que recibiré
+		// Los primeros 4 bytes que reciba serán el tamaño
+		size = ((RxData[0]-48)*1000)+((RxData[1]-48)*100)+((RxData[2]-48)*10)+((RxData[3]-48));
+		// Le resto 48 para pasar de ascii al número.
+		isSizeRxed = 1;
+		HAL_UART_Receive_DMA(&huart2, RxData,size);
+
+	}
+	else if (isSizeRxed == 1){
+		isSizeRxed = 0;
+
+		for (int i = 0; i < AI_MODEL_S2F1_IN_1_SIZE; ++i) {
+		    memcpy(&in_data_s2f1[i], &RxData[i * 4], sizeof(float));
+		}
+
+		HAL_UART_Receive_DMA(&huart2, RxData,4);
+
+	}
+
+}
+*/
+
 
 /* USER CODE END 0 */
 
@@ -88,46 +134,49 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-	char buf[50];
+	char buf[60];
 	int buf_len = 0;
 	ai_error ai_err;
 	ai_i32 nbatch;
-	uint32_t timestamp;
-	float y_val;
+	// uint32_t timestamp;
+	float y_val_s2f1;
 
 	// Espacio de memoria para guardar calculos intermedios (usando variables definidas por Cube.IA, no por mi)
-	AI_ALIGNED(4) ai_u8 activations[AI_SINE_MODEL_DATA_ACTIVATIONS_SIZE];
+	AI_ALIGNED(4) ai_u8 activations_s2f1[AI_MODEL_S2F1_DATA_ACTIVATIONS_SIZE];
 
 	// Buffers para los tensores de entradas y salidas
-	AI_ALIGNED(4) ai_float in_data[AI_SINE_MODEL_IN_1_SIZE]; // Esto espera flotante de 32 bits
-	AI_ALIGNED(4) ai_float out_data[AI_SINE_MODEL_OUT_1_SIZE];
+	AI_ALIGNED(4) ai_float in_data_s2f1[AI_MODEL_S2F1_IN_1_SIZE]; // Esto espera 1153 flotantes de 32 bits
+	AI_ALIGNED(4) ai_float out_data_s2f1[AI_MODEL_S2F1_IN_1_SIZE];
 
-	ai_handle sine_model = AI_HANDLE_NULL;
+	ai_handle model_s2f1 = AI_HANDLE_NULL;
 
 	// Para guardar punteros hacia los datos
-	ai_buffer ai_input[AI_SINE_MODEL_IN_NUM];
-	ai_buffer ai_output[AI_SINE_MODEL_OUT_NUM];
+	ai_buffer ai_input_s2f1[AI_MODEL_S2F1_IN_NUM];
+	ai_buffer ai_output_s2f1[AI_MODEL_S2F1_OUT_NUM];
 
-	ai_shape_dimension input_shape_data[4] = {1, 1, 1, 1};
-	ai_shape_dimension output_shape_data[4] = {1, 1, 1, 1};
+
+
+	// {N,H,W,C} : Num_Muestras, Altura, Ancho, Canales
+	ai_shape_dimension input_shape_data_s2f1[4] =  {1, AI_MODEL_S2F1_IN_1_SIZE, 1, 1};  	// 1 muestra de algo de 1153x1, de 1 canal
+	ai_shape_dimension output_shape_data_s2f1[4] = {1, 1, 1, 1};  		// 1 escalar (1 muestra de 1x1 de 1 canal)
 
 
 	// Set working memory and get weights/bias from model
-	ai_network_params ai_params = {
-		.params = AI_SINE_MODEL_DATA_WEIGHTS(ai_sine_model_data_weights_get()),
-		.activations = AI_SINE_MODEL_DATA_ACTIVATIONS(activations),
-	};
+	ai_network_params ai_params_s2f1 = {
+		.params = AI_MODEL_S2F1_DATA_WEIGHTS(ai_model_s2f1_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
+		.activations = AI_MODEL_S2F1_DATA_ACTIVATIONS(activations_s2f1),		 // deprecated
+	};																			 // Luego revisaré cómo se hace actualmente
 
 	// Pointer wrapper structs to data buffers
-	ai_input[0].data = AI_HANDLE_PTR(in_data);
-	ai_input[0].shape.size = 4;
-	ai_input[0].shape.data = input_shape_data;
-	ai_input[0].format = AI_BUFFER_FORMAT_FLOAT;
+	ai_input_s2f1[0].data = AI_HANDLE_PTR(in_data_s2f1);
+	ai_input_s2f1[0].shape.size = 4;
+	ai_input_s2f1[0].shape.data = input_shape_data_s2f1;
+	ai_input_s2f1[0].format = AI_BUFFER_FORMAT_FLOAT;
 
-	ai_output[0].data = AI_HANDLE_PTR(out_data);
-	ai_output[0].shape.size = 4;
-	ai_output[0].shape.data = output_shape_data;
-	ai_output[0].format = AI_BUFFER_FORMAT_FLOAT;
+	ai_output_s2f1[0].data = AI_HANDLE_PTR(out_data_s2f1);
+	ai_output_s2f1[0].shape.size = 4;
+	ai_output_s2f1[0].shape.data = output_shape_data_s2f1;
+	ai_output_s2f1[0].format = AI_BUFFER_FORMAT_FLOAT;
 
 
 
@@ -151,9 +200,74 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_TIM16_Init();
+  MX_CRC_Init();
   /* USER CODE BEGIN 2 */
+
+
+  // Start timer/counter
+  HAL_TIM_Base_Start(&htim16);
+  if (VERBOSE){
+	  // Saludo
+	  buf_len = sprintf(buf, "\r\n\r\nSTM32 X-Cube-AI 1 Finger Test\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t * )buf, buf_len, 100);
+  }
+
+  // La red en sí
+  ai_err = ai_model_s2f1_create(&model_s2f1, AI_MODEL_S2F1_DATA_CONFIG);
+  if (ai_err.type != AI_ERROR_NONE)
+  {
+	  buf_len = sprintf(buf, "Error: could not create NN instance\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+
+  if (VERBOSE){
+	  ai_network_report report;
+	  // Revisando las dimensiones reales de entrada y salida
+	  if (ai_model_s2f1_get_info(model_s2f1, &report)){
+		  printf("Input shape (dims=%d): ", report.inputs->shape.size);
+			  for (int i = 0; i < report.inputs->shape.size; ++i)
+				  printf("%lu ", (unsigned long)report.inputs->shape.data[i]);
+			  printf("\r\n");
+		  printf("Output shape (dims=%d): ", report.outputs->shape.size);
+			  for (int i = 0; i < report.outputs->shape.size; ++i)
+				  printf("%lu ", (unsigned long)report.outputs->shape.data[i]);
+			  printf("\r\n");
+	  }
+  }
+
+
+
+  // Inicializar la NN
+  if (!ai_model_s2f1_init(model_s2f1, &ai_params_s2f1))
+  {
+	  buf_len = sprintf(buf, "Error, could not initialize NN\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+
+
+  //HAL_UART_Receive_DMA(&huart2, RxData,4); // La primera vez espero 4 bytes con el número de 4 dígitos que será el tamaño a recibir
+
+
+  // Voy a leer 1 sola vez el tamaño y luego esperar que se mande esa cantidad de números varias veces.
+  // Si se quiere cambiar el tamaño, habrá que reiniciar
+  if (VERBOSE){
+  	 	  // Esperando
+  	 	  buf_len = sprintf(buf, "Introduzca 4 dígitos con la cantidad de bytes a enviar\r\n");
+  	 	  HAL_UART_Transmit(&huart2, (uint8_t * )buf, buf_len, 100);
+  	   }
+
+  	  HAL_UART_Receive(&huart2,RxSize,4,HAL_MAX_DELAY);
+  	  // Los primeros 4 bytes que reciba serán el tamaño
+  	  size = ((RxSize[0]-48)*1000)+((RxSize[1]-48)*100)+((RxSize[2]-48)*10)+((RxSize[3]-48));
+  	  // Le resto 48 para pasar de ascii al número.
+
 
   /* USER CODE END 2 */
 
@@ -161,9 +275,59 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+	  // timestamp inicio
+	  //timestamp = htim16.Instance->CNT;
+
+	  if (VERBOSE){
+		  buf_len = sprintf(buf, "Esperando a recibir un grupo de %ld bytes\r\n", size);
+		  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  }
+
+	  HAL_UART_Receive(&huart2, RxData,size,HAL_MAX_DELAY);
+
+	  memcpy(in_data_s2f1, RxData, sizeof(float) * AI_MODEL_S2F1_IN_1_SIZE);
+
+	  if (VERBOSE){
+		  for (int i = 0; i < AI_MODEL_S2F1_IN_1_SIZE; ++i) {
+		    buf_len = sprintf(buf, "in_data_s2f1[%d] = %.5f \r\n",i,in_data_s2f1[i]);
+			HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+		}
+	  }
+	  if (VERBOSE){
+		  buf_len = sprintf(buf, "Ya se convirtieron a flotantes\r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  }
+
+	  // Realizar inferencia
+	  nbatch = ai_model_s2f1_run(model_s2f1, &ai_input_s2f1[0], &ai_output_s2f1[0]);
+	  if (nbatch != 1)
+	    {
+	  	  buf_len = sprintf(buf, "Error, could not run inference\r\n");
+	  	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  	  while(1);
+	    }
+	  //long unsigned int tim = htim16.Instance->CNT - timestamp;
+	 // Lee la prediccion
+	  y_val_s2f1 = out_data_s2f1[0];
+	  if (VERBOSE){
+		  buf_len = sprintf(buf, "Resultado = %.5f\r\n", y_val_s2f1);
+	  } else {
+		  buf_len = sprintf(buf,"%.8f\r\n",y_val_s2f1);
+
+	 }
+	 HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	//  		  HAL_UART_Transmit(&huart2, TxData,10240, HAL_MAX_DELAY);
+
+
+
+	 //HAL_Delay(500);
+
   }
   /* USER CODE END 3 */
 }
@@ -215,6 +379,37 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief CRC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_CRC_Init(void)
+{
+
+  /* USER CODE BEGIN CRC_Init 0 */
+
+  /* USER CODE END CRC_Init 0 */
+
+  /* USER CODE BEGIN CRC_Init 1 */
+
+  /* USER CODE END CRC_Init 1 */
+  hcrc.Instance = CRC;
+  hcrc.Init.DefaultPolynomialUse = DEFAULT_POLYNOMIAL_ENABLE;
+  hcrc.Init.DefaultInitValueUse = DEFAULT_INIT_VALUE_ENABLE;
+  hcrc.Init.InputDataInversionMode = CRC_INPUTDATA_INVERSION_NONE;
+  hcrc.Init.OutputDataInversionMode = CRC_OUTPUTDATA_INVERSION_DISABLE;
+  hcrc.InputDataFormat = CRC_INPUTDATA_FORMAT_BYTES;
+  if (HAL_CRC_Init(&hcrc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN CRC_Init 2 */
+
+  /* USER CODE END CRC_Init 2 */
+
 }
 
 /**
@@ -285,6 +480,22 @@ static void MX_USART2_UART_Init(void)
 }
 
 /**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel6_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -324,6 +535,33 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+
+// Redireccion de printf para evitar errores en Build
+
+int __io_putchar(int ch)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+    return ch;
+}
+
+int _write(int file, char *ptr, int len)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY);
+    return len;
+}
+
+
+// Stubs para que el linker deje de llorar
+int _close(int file) { return -1; }
+int _fstat(int file, void *st) { return 0; }
+int _isatty(int file) { return 1; }
+int _lseek(int file, int ptr, int dir) { return 0; }
+int _read(int file, char *ptr, int len) { return 0; }
+int _kill(int pid, int sig) { return -1; }
+int _getpid(void) { return 1; }
+
+
 
 /* USER CODE END 4 */
 
