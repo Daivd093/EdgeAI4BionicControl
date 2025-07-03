@@ -73,7 +73,7 @@ N = N*4
     
 L = R_test.shape[0]
 
-pred_stm32 = []
+pred_stm32 = np.empty((0,5),dtype=np.float32)
 
 import serial
 
@@ -88,7 +88,7 @@ logging.warning("Esta cosa está funcionando a penas y luego será corregido")
 # Saludo
 respuesta = ser.readline().decode()
 while respuesta:
-    #print(respuesta)
+    print(respuesta)
     respuesta = ser.readline().decode()
     
 # Envía tamaño
@@ -97,7 +97,7 @@ ser.write(f"{N:04}".encode())
 # Espera recibir
 respuesta = ser.readline().decode()
 while respuesta:
-    #print(respuesta)
+    print(respuesta)
     respuesta = ser.readline().decode()
 
 
@@ -109,12 +109,14 @@ for fila in range(L):
     # Respuesta
     respuesta = ser.readline().decode()
     try:
-        pred_stm32.append(np.float32(respuesta))
+        r_proc = np.array(respuesta.strip().split(' '),dtype=np.float32)
+        pred_stm32 = np.vstack((pred_stm32,r_proc))
     except:
+        logging.warn(f"{respuesta} no pudo ser incorporado a las predicciones")
         pass
 
     while respuesta:
-        #print(respuesta)
+        print(respuesta)
         respuesta = ser.readline().decode()
     
 
@@ -129,6 +131,6 @@ try:
 except:
     logging.info(f"Carpeta {folder} ya existía")
     
-filename = folder + f'/subj{s}_stm32_testpredictions.mat'
+filename = folder + f'/subj{s}_stm32_testpredictions_5f.mat'
 mat_dict = {'unprocessed_predictions': pred_stm32}
 savemat(filename, mat_dict)

@@ -107,7 +107,7 @@
           -128
         ],
         "scales": [
-          0.014135593548417091
+          0.015156405046582222
         ]
       },
       "is_param": false,
@@ -175,7 +175,7 @@
           0
         ],
         "scales": [
-          0.0003016531409230083
+          0.0003219882200937718
         ]
       },
       "is_param": true,
@@ -239,7 +239,7 @@
           -128
         ],
         "scales": [
-          0.0008326808456331491
+          0.0008437361684627831
         ]
       },
       "is_param": false,
@@ -307,7 +307,7 @@
           0
         ],
         "scales": [
-          0.00022314960369840264
+          0.00016709619376342744
         ]
       },
       "is_param": true,
@@ -371,7 +371,7 @@
           -128
         ],
         "scales": [
-          0.003646975150331855
+          0.003979955799877644
         ]
       },
       "is_param": false,
@@ -439,7 +439,7 @@
           0
         ],
         "scales": [
-          0.002342493971809745
+          0.0025996726471930742
         ]
       },
       "is_param": true,
@@ -473,7 +473,7 @@
       "intq": {},
       "is_param": false,
       "mpool_id": 0,
-      "name": "serving_default_dense_240_input0_output_array",
+      "name": "serving_default_dense_input0_output_array",
       "nbits": 32,
       "offset_start": 0,
       "qmn": {},
@@ -488,44 +488,44 @@
   ],
   "environment": {
     "generated_model": {
-      "generated_time": "2025-07-01T08:23:18-0400",
+      "generated_time": "2025-07-03T17:07:17-0400",
       "model_files": [
         {
           "name": "model_s2f1_data_params.h",
-          "signature": "0x2baa727302d2cac45219c6316526cac2"
+          "signature": "0x90b56c602630a88c344f93e87d84f094"
         },
         {
           "name": "model_s2f1_data_params.c",
-          "signature": "0x23341b62e83597199a5dad93f89a19bd"
+          "signature": "0x0c75612f427c02765b38165f1f17d1fb"
         },
         {
           "name": "model_s2f1_data.h",
-          "signature": "0xe8b3dfe91a96d385416c910ca3626ab8"
+          "signature": "0xeaa7e95d1204dec9d39a7604cd2cc6ea"
         },
         {
           "name": "model_s2f1_data.c",
-          "signature": "0x9b66795779db0ed3e45920eb940ce0a4"
+          "signature": "0x02f53cc8977a6f264afc4cd6014f9600"
         },
         {
           "name": "model_s2f1_config.h",
-          "signature": "0xf5d4afaef0ffca743610d403bd616505"
+          "signature": "0x5e713b5b929867c01425aa4d0f58eca8"
         },
         {
           "name": "model_s2f1.h",
-          "signature": "0x41b7bb8dd028ff27483e9cca381ec0eb"
+          "signature": "0x803cada2a246dd2326223d4e910e56e4"
         },
         {
           "name": "model_s2f1.c",
-          "signature": "0x4603a7f472daddd1efc887ea4a799b5a"
+          "signature": "0xd254fa57c046c25d51e31923126e094b"
         }
       ],
       "name": "model_s2f1"
     },
-    "network_signature": "0xee02e5e7be578cbe",
+    "network_signature": "0x38059e13d2d1495d",
     "test_name": "",
     "tools": [
       {
-        "arguments": "generate --target stm32l4 --name model_s2f1 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f1_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace328973736644002106719708722240542 --output C:/Users/david/.stm32cubemx/model_s2f1_output",
+        "arguments": "generate --target stm32l4 --name model_s2f1 -m C:/Users/david/Documents/Edging/Repo/EdgeAI4BionicControl/Dataset_and_Models/models/tflite/model_s2f1_int8.tflite --compression none --verbosity 1 --workspace C:/Users/david/AppData/Local/Temp/mxAI_workspace2371420103118002021464485071325389 --output C:/Users/david/.stm32cubemx/model_s2f1_output",
         "environment": [
           "STATS_TYPE=X-CUBE-AI"
         ],
@@ -533,7 +533,7 @@
           "model_files": [
             {
               "name": "model_s2f1_int8.tflite",
-              "signature": "0x5b83477482ff83d5a9f0683f423e9eb4"
+              "signature": "0xb34c942ab868ca508997a80e69c219cc"
             }
           ],
           "n_params": 156033,
@@ -754,7 +754,7 @@
             "type": "FLOAT",
             "zero": []
           },
-          "name": "serving_default_dense_240_input0",
+          "name": "serving_default_dense_input0",
           "shape": [
             1,
             1153
