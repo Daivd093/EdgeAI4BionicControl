@@ -30,14 +30,14 @@
 #include "ai_platform.h"
 #include "model_s2f1.h"
 #include "model_s2f1_data.h"
-//#include "model_s2f2.h"
-//#include "model_s2f2_data.h"
-//#include "model_s2f3.h"
-//#include "model_s2f3_data.h"
-//#include "model_s2f4.h"
-//#include "model_s2f4_data.h"
-//#include "model_s2f5.h"
-//#include "model_s2f5_data.h"
+#include "model_s2f2.h"
+#include "model_s2f2_data.h"
+#include "model_s2f3.h"
+#include "model_s2f3_data.h"
+#include "model_s2f4.h"
+#include "model_s2f4_data.h"
+#include "model_s2f5.h"
+#include "model_s2f5_data.h"
 
 
 
@@ -54,7 +54,7 @@
 #define VERBOSE 0   // Con VERBOSE 0 solo quedan mensajes de error y se entregan (IN, OUT)
 //#define NUM_INPUTS 1153 // Cantidad de columnas en la matriz R. Por sujeto las opciones son: 1489/1153/1537
 #define INPUT_BITS ( 4 * AI_MODEL_S2F1_IN_1_SIZE ) // Son float32 los datos de entrada
-#define NUM_FINGERS 1 // Idealmente la idea es llegar a 5
+#define NUM_FINGERS 3 // Idealmente la idea es llegar a 5
 
 /* USER CODE END PD */
 
@@ -134,31 +134,68 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
-	char buf[60];
+	char buf[128];
 	int buf_len = 0;
-	ai_error ai_err;
-	ai_i32 nbatch;
+	ai_error ai_err1;
+	ai_error ai_err2;
+	ai_error ai_err3;
+	ai_error ai_err4;
+	ai_error ai_err5;
+	ai_i32 nbatch1;
+	ai_i32 nbatch2;
+	ai_i32 nbatch3;
+	ai_i32 nbatch4;
+	ai_i32 nbatch5;
 	// uint32_t timestamp;
 	float y_val_s2f1;
+	float y_val_s2f2;
+	float y_val_s2f3;
+	float y_val_s2f4;
+	float y_val_s2f5;
 
 	// Espacio de memoria para guardar calculos intermedios (usando variables definidas por Cube.IA, no por mi)
 	AI_ALIGNED(4) ai_u8 activations_s2f1[AI_MODEL_S2F1_DATA_ACTIVATIONS_SIZE];
+	AI_ALIGNED(4) ai_u8 activations_s2f2[AI_MODEL_S2F2_DATA_ACTIVATIONS_SIZE];
+	AI_ALIGNED(4) ai_u8 activations_s2f3[AI_MODEL_S2F3_DATA_ACTIVATIONS_SIZE];
+	AI_ALIGNED(4) ai_u8 activations_s2f4[AI_MODEL_S2F4_DATA_ACTIVATIONS_SIZE];
+	AI_ALIGNED(4) ai_u8 activations_s2f5[AI_MODEL_S2F5_DATA_ACTIVATIONS_SIZE];
+
 
 	// Buffers para los tensores de entradas y salidas
-	AI_ALIGNED(4) ai_float in_data_s2f1[AI_MODEL_S2F1_IN_1_SIZE]; // Esto espera 1153 flotantes de 32 bits
+	AI_ALIGNED(4) ai_float in_data_nn[AI_MODEL_S2F1_IN_1_SIZE]; // Esto espera 1153 flotantes de 32 bits
 	AI_ALIGNED(4) ai_float out_data_s2f1[AI_MODEL_S2F1_IN_1_SIZE];
+	AI_ALIGNED(4) ai_float out_data_s2f2[AI_MODEL_S2F2_IN_1_SIZE];
+	AI_ALIGNED(4) ai_float out_data_s2f3[AI_MODEL_S2F3_IN_1_SIZE];
+	AI_ALIGNED(4) ai_float out_data_s2f4[AI_MODEL_S2F4_IN_1_SIZE];
+	AI_ALIGNED(4) ai_float out_data_s2f5[AI_MODEL_S2F5_IN_1_SIZE];
 
 	ai_handle model_s2f1 = AI_HANDLE_NULL;
+	ai_handle model_s2f2 = AI_HANDLE_NULL;
+	ai_handle model_s2f3 = AI_HANDLE_NULL;
+	ai_handle model_s2f4 = AI_HANDLE_NULL;
+	ai_handle model_s2f5 = AI_HANDLE_NULL;
 
 	// Para guardar punteros hacia los datos
 	ai_buffer ai_input_s2f1[AI_MODEL_S2F1_IN_NUM];
 	ai_buffer ai_output_s2f1[AI_MODEL_S2F1_OUT_NUM];
 
+	ai_buffer ai_input_s2f2[AI_MODEL_S2F2_IN_NUM];
+	ai_buffer ai_output_s2f2[AI_MODEL_S2F2_OUT_NUM];
+
+	ai_buffer ai_input_s2f3[AI_MODEL_S2F3_IN_NUM];
+	ai_buffer ai_output_s2f3[AI_MODEL_S2F3_OUT_NUM];
+
+	ai_buffer ai_input_s2f4[AI_MODEL_S2F4_IN_NUM];
+	ai_buffer ai_output_s2f4[AI_MODEL_S2F4_OUT_NUM];
+
+	ai_buffer ai_input_s2f5[AI_MODEL_S2F5_IN_NUM];
+	ai_buffer ai_output_s2f5[AI_MODEL_S2F5_OUT_NUM];
+
 
 
 	// {N,H,W,C} : Num_Muestras, Altura, Ancho, Canales
-	ai_shape_dimension input_shape_data_s2f1[4] =  {1, AI_MODEL_S2F1_IN_1_SIZE, 1, 1};  	// 1 muestra de algo de 1153x1, de 1 canal
-	ai_shape_dimension output_shape_data_s2f1[4] = {1, 1, 1, 1};  		// 1 escalar (1 muestra de 1x1 de 1 canal)
+	ai_shape_dimension input_shape_data[4] =  {1, AI_MODEL_S2F1_IN_1_SIZE, 1, 1};  	// 1 muestra de algo de 1153x1, de 1 canal
+	ai_shape_dimension output_shape_data[4] = {1, 1, 1, 1};  		// 1 escalar (1 muestra de 1x1 de 1 canal)
 
 
 	// Set working memory and get weights/bias from model
@@ -166,17 +203,80 @@ int main(void)
 		.params = AI_MODEL_S2F1_DATA_WEIGHTS(ai_model_s2f1_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
 		.activations = AI_MODEL_S2F1_DATA_ACTIVATIONS(activations_s2f1),		 // deprecated
 	};																			 // Luego revisaré cómo se hace actualmente
+	ai_network_params ai_params_s2f2 = {
+			.params = AI_MODEL_S2F2_DATA_WEIGHTS(ai_model_s2f2_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
+			.activations = AI_MODEL_S2F2_DATA_ACTIVATIONS(activations_s2f2),		 // deprecated
+		};																			 // Luego revisaré cómo se hace actualmente
+	ai_network_params ai_params_s2f3 = {
+				.params = AI_MODEL_S2F3_DATA_WEIGHTS(ai_model_s2f3_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
+				.activations = AI_MODEL_S2F3_DATA_ACTIVATIONS(activations_s2f3),		 // deprecated
+			};																			 // Luego revisaré cómo se hace actualmente
+
+	ai_network_params ai_params_s2f4 = {
+					.params = AI_MODEL_S2F4_DATA_WEIGHTS(ai_model_s2f4_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
+					.activations = AI_MODEL_S2F4_DATA_ACTIVATIONS(activations_s2f4),		 // deprecated
+				};
+
+	ai_network_params ai_params_s2f5 = {
+					.params = AI_MODEL_S2F5_DATA_WEIGHTS(ai_model_s2f5_data_weights_get()),  // En realidad esta forma de hacerlo está obsoleta
+					.activations = AI_MODEL_S2F5_DATA_ACTIVATIONS(activations_s2f5),		 // deprecated
+				};
 
 	// Pointer wrapper structs to data buffers
-	ai_input_s2f1[0].data = AI_HANDLE_PTR(in_data_s2f1);
+	// S2F1
+	ai_input_s2f1[0].data = AI_HANDLE_PTR(in_data_nn);
 	ai_input_s2f1[0].shape.size = 4;
-	ai_input_s2f1[0].shape.data = input_shape_data_s2f1;
+	ai_input_s2f1[0].shape.data = input_shape_data;
 	ai_input_s2f1[0].format = AI_BUFFER_FORMAT_FLOAT;
 
 	ai_output_s2f1[0].data = AI_HANDLE_PTR(out_data_s2f1);
 	ai_output_s2f1[0].shape.size = 4;
-	ai_output_s2f1[0].shape.data = output_shape_data_s2f1;
+	ai_output_s2f1[0].shape.data = output_shape_data;
 	ai_output_s2f1[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	// S2F2
+	ai_input_s2f2[0].data = AI_HANDLE_PTR(in_data_nn);
+	ai_input_s2f2[0].shape.size = 4;
+	ai_input_s2f2[0].shape.data = input_shape_data;
+	ai_input_s2f2[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	ai_output_s2f2[0].data = AI_HANDLE_PTR(out_data_s2f2);
+	ai_output_s2f2[0].shape.size = 4;
+	ai_output_s2f2[0].shape.data = output_shape_data;
+	ai_output_s2f2[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	// S2F3
+	ai_input_s2f3[0].data = AI_HANDLE_PTR(in_data_nn);
+	ai_input_s2f3[0].shape.size = 4;
+	ai_input_s2f3[0].shape.data = input_shape_data;
+	ai_input_s2f3[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	ai_output_s2f3[0].data = AI_HANDLE_PTR(out_data_s2f3);
+	ai_output_s2f3[0].shape.size = 4;
+	ai_output_s2f3[0].shape.data = output_shape_data;
+	ai_output_s2f3[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	// S2F4
+	ai_input_s2f4[0].data = AI_HANDLE_PTR(in_data_nn);
+	ai_input_s2f4[0].shape.size = 4;
+	ai_input_s2f4[0].shape.data = input_shape_data;
+	ai_input_s2f4[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	ai_output_s2f4[0].data = AI_HANDLE_PTR(out_data_s2f4);
+	ai_output_s2f4[0].shape.size = 4;
+	ai_output_s2f4[0].shape.data = output_shape_data;
+	ai_output_s2f4[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	// S2F5
+	ai_input_s2f5[0].data = AI_HANDLE_PTR(in_data_nn);
+	ai_input_s2f5[0].shape.size = 4;
+	ai_input_s2f5[0].shape.data = input_shape_data;
+	ai_input_s2f5[0].format = AI_BUFFER_FORMAT_FLOAT;
+
+	ai_output_s2f5[0].data = AI_HANDLE_PTR(out_data_s2f5);
+	ai_output_s2f5[0].shape.size = 4;
+	ai_output_s2f5[0].shape.data = output_shape_data;
+	ai_output_s2f5[0].format = AI_BUFFER_FORMAT_FLOAT;
 
 
 
@@ -209,25 +309,62 @@ int main(void)
 
   // Start timer/counter
   HAL_TIM_Base_Start(&htim16);
-  if (VERBOSE){
+  //if (VERBOSE){
 	  // Saludo
-	  buf_len = sprintf(buf, "\r\n\r\nSTM32 X-Cube-AI 1 Finger Test\r\n");
+	  buf_len = sprintf(buf, "\r\n\r\nSTM32 X-Cube-AI 2 Finger Test\r\n");
 	  HAL_UART_Transmit(&huart2, (uint8_t * )buf, buf_len, 100);
-  }
+//  }
 
-  // La red en sí
-  ai_err = ai_model_s2f1_create(&model_s2f1, AI_MODEL_S2F1_DATA_CONFIG);
-  if (ai_err.type != AI_ERROR_NONE)
+  // Crear las redes
+
+  // S2f1
+  ai_err1 = ai_model_s2f1_create(&model_s2f1, AI_MODEL_S2F1_DATA_CONFIG);
+  if (ai_err1.type != AI_ERROR_NONE)
   {
-	  buf_len = sprintf(buf, "Error: could not create NN instance\r\n");
+	  buf_len = sprintf(buf, "Error: could not create s2f1 NN instance\r\n");
 	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 	  while(1);
   }
 
+  // S2f2
+  ai_err2 = ai_model_s2f2_create(&model_s2f2, AI_MODEL_S2F2_DATA_CONFIG);
+  if (ai_err2.type != AI_ERROR_NONE)
+  {
+	  buf_len = sprintf(buf, "Error: could not create s2f2 NN instance\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F3
+  ai_err3 = ai_model_s2f3_create(&model_s2f3, AI_MODEL_S2F3_DATA_CONFIG);
+  if (ai_err3.type != AI_ERROR_NONE)
+  {
+	  buf_len = sprintf(buf, "Error: could not create s2f3 NN instance\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F4
+  ai_err4 = ai_model_s2f4_create(&model_s2f4, AI_MODEL_S2F4_DATA_CONFIG);
+  if (ai_err4.type != AI_ERROR_NONE)
+  {
+	  buf_len = sprintf(buf, "Error: could not create s2f4 NN instance\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F5
+  ai_err5 = ai_model_s2f5_create(&model_s2f5, AI_MODEL_S2F5_DATA_CONFIG);
+  if (ai_err5.type != AI_ERROR_NONE)
+  {
+	  buf_len = sprintf(buf, "Error: could not create s2f5 NN instance\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
 
   if (VERBOSE){
 	  ai_network_report report;
-	  // Revisando las dimensiones reales de entrada y salida
+	  // Revisando las dimensiones reales de entrada y salida (Es lo mismo para las 5 redes)
 	  if (ai_model_s2f1_get_info(model_s2f1, &report)){
 		  printf("Input shape (dims=%d): ", report.inputs->shape.size);
 			  for (int i = 0; i < report.inputs->shape.size; ++i)
@@ -242,13 +379,48 @@ int main(void)
 
 
 
-  // Inicializar la NN
+  // Inicializar las NN
+
+  // S2F1
   if (!ai_model_s2f1_init(model_s2f1, &ai_params_s2f1))
   {
-	  buf_len = sprintf(buf, "Error, could not initialize NN\r\n");
+	  buf_len = sprintf(buf, "Error, could not initialize s2f1 NN\r\n");
 	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 	  while(1);
   }
+
+  // S2F2
+  if (!ai_model_s2f2_init(model_s2f2, &ai_params_s2f2))
+  {
+	  buf_len = sprintf(buf, "Error, could not initialize s2f2 NN\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F3
+  if (!ai_model_s2f3_init(model_s2f3, &ai_params_s2f3))
+  {
+	  buf_len = sprintf(buf, "Error, could not initialize s2f3 NN\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F4
+  if (!ai_model_s2f4_init(model_s2f4, &ai_params_s2f4))
+  {
+	  buf_len = sprintf(buf, "Error, could not initialize s2f4 NN\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
+  // S2F5
+  if (!ai_model_s2f5_init(model_s2f5, &ai_params_s2f5))
+  {
+	  buf_len = sprintf(buf, "Error, could not initialize s2f5 NN\r\n");
+	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  while(1);
+  }
+
 
 
 
@@ -286,11 +458,12 @@ int main(void)
 
 	  HAL_UART_Receive(&huart2, RxData,size,HAL_MAX_DELAY);
 
-	  memcpy(in_data_s2f1, RxData, sizeof(float) * AI_MODEL_S2F1_IN_1_SIZE);
+	  memcpy(in_data_nn, RxData, sizeof(float) * AI_MODEL_S2F1_IN_1_SIZE);
+
 
 	  if (VERBOSE){
 		  for (int i = 0; i < AI_MODEL_S2F1_IN_1_SIZE; ++i) {
-		    buf_len = sprintf(buf, "in_data_s2f1[%d] = %.5f \r\n",i,in_data_s2f1[i]);
+		    buf_len = sprintf(buf, "in_data_nn[%d] = %.5f \r\n",i,in_data_nn[i]);
 			HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 		}
 	  }
@@ -300,20 +473,64 @@ int main(void)
 	  }
 
 	  // Realizar inferencia
-	  nbatch = ai_model_s2f1_run(model_s2f1, &ai_input_s2f1[0], &ai_output_s2f1[0]);
-	  if (nbatch != 1)
+
+	  // S2F1
+	  nbatch1 = ai_model_s2f1_run(model_s2f1, &ai_input_s2f1[0], &ai_output_s2f1[0]);
+	  if (nbatch1 != 1)
 	    {
-	  	  buf_len = sprintf(buf, "Error, could not run inference\r\n");
+	  	  buf_len = sprintf(buf, "Error, could not run inference in s2f1 NN\r\n");
 	  	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
 	  	  while(1);
 	    }
+
+	  // S2F2
+	  nbatch2 = ai_model_s2f2_run(model_s2f2, &ai_input_s2f2[0], &ai_output_s2f2[0]);
+	  	  if (nbatch2 != 1)
+	  	    {
+	  	  	  buf_len = sprintf(buf, "Error, could not run inference in s2f2 NN\r\n");
+	  	  	  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+	  	  	  while(1);
+	  	    }
+
+	  // S2F3
+	  nbatch3 = ai_model_s2f3_run(model_s2f3, &ai_input_s2f3[0], &ai_output_s2f3[0]);
+		  if (nbatch3 != 1)
+			{
+			  buf_len = sprintf(buf, "Error, could not run inference in s2f3 NN\r\n");
+			  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+			  while(1);
+			}
+
+	  // S2F4
+	  nbatch4 = ai_model_s2f4_run(model_s2f4, &ai_input_s2f4[0], &ai_output_s2f4[0]);
+		  if (nbatch4 != 1)
+			{
+			  buf_len = sprintf(buf, "Error, could not run inference in s2f4 NN\r\n");
+			  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+			  while(1);
+			}
+
+	  // S2F5
+	  nbatch5 = ai_model_s2f5_run(model_s2f5, &ai_input_s2f5[0], &ai_output_s2f5[0]);
+		  if (nbatch5 != 1)
+			{
+			  buf_len = sprintf(buf, "Error, could not run inference in s2f5 NN\r\n");
+			  HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);
+			  while(1);
+			}
+
 	  //long unsigned int tim = htim16.Instance->CNT - timestamp;
 	 // Lee la prediccion
 	  y_val_s2f1 = out_data_s2f1[0];
+	  y_val_s2f2 = out_data_s2f2[0];
+	  y_val_s2f3 = out_data_s2f3[0];
+	  y_val_s2f4 = out_data_s2f4[0];
+	  y_val_s2f5 = out_data_s2f5[0];
+
 	  if (VERBOSE){
-		  buf_len = sprintf(buf, "Resultado = %.5f\r\n", y_val_s2f1);
+		  buf_len = sprintf(buf, "y_s2f1 = %.3f ; y_s2f2 = %.3f ; y_s2f3 = %.3f ; y_s2f4 = %.3f ; y_s2f5 = %.3f \r\n", y_val_s2f1,y_val_s2f2, y_val_s2f3, y_val_s2f4, y_val_s2f5);
 	  } else {
-		  buf_len = sprintf(buf,"%.8f\r\n",y_val_s2f1);
+		  buf_len = sprintf(buf,"%.8f %.8f %.8f %.8f %.8f\r\n",y_val_s2f1, y_val_s2f2, y_val_s2f3, y_val_s2f4, y_val_s2f5);
 
 	 }
 	 HAL_UART_Transmit(&huart2, (uint8_t *)buf, buf_len, 100);

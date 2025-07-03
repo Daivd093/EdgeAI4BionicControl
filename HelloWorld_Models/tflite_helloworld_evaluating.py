@@ -24,8 +24,8 @@ plt.plot(x_values,predictions,'r.',label='Prediction')
 plt.legend()
 plt.show()
 
-mse_model = 1/n_samples * (sum((y_values-predictions)**2))
-print("Error cuadrático medio del modelo float32 local: ", mse_model)
+mae_model = 1/n_samples * (sum(abs(y_values-predictions)))
+print("Error absoluto medio del modelo float32 local: ", mse_model)
 
 # Para evaluar
 
