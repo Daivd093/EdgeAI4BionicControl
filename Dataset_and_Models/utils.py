@@ -20,7 +20,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
+# For input processing
 import scipy
 from scipy import signal as sig
 from scipy.signal import filtfilt
@@ -28,6 +28,13 @@ from scipy.signal import firwin
 from scipy.signal import kaiserord
 from copy import deepcopy
 from scipy.fft import rfft, rfftfreq
+
+# For output processing
+import joblib
+#import sklearn
+from sklearn.preprocessing import MinMaxScaler
+#import scipy
+from scipy.interpolate import CubicSpline
 
 
 import numpy as np
@@ -216,6 +223,33 @@ def create_R_matrix(features, N_wind):
         R[i-(N_wind-1), 1:] = temp_arr
 
     return R
+
+
+# De-process outputs
+def process_outputs(raw_nn_output, subject = 2, expected_output_length = 200000):
+    logging.info(f"raw NN ouptut shape: {raw_nn_output.shape}")
+    logging.info(f"The processed output's lenght will be: {expected_output_length}")
+    
+    scaler_y_filename = f"scaler_y_{subject}.save"
+    scaler_y = joblib.load(scaler_y_filename)
+    scaled_y_pred = scaler_y.inverse_transform(raw_nn_output)
+
+    xs = np.linspace(0,scaled_y_pred.shape[0],expected_output_length) # test_data_shape_0 from the .npz file
+
+    #interpolation
+    y = np.empty_like(scaled_y_pred[:,0]) # for 1 or more fingers
+    cs = [] 
+    for i in range(scaled_y_pred.shape[1]):
+        x = np.arange(scaled_y_pred.shape[0])
+        y = scaled_y_pred[:,i]
+        cs.append(CubicSpline(x, y, bc_type = 'clamped'))
+    
+    finger_predictions = np.vstack((cs[0](xs),cs[1](xs), cs[2](xs), cs[3](xs), cs[4](xs))).T
+
+    return finger_predictions
+
+
+
 
 
 if __name__ == "__main__":

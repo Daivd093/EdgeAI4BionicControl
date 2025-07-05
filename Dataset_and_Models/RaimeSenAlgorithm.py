@@ -86,7 +86,7 @@ import joblib
 
 import sklearn
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.preprocessing import StandardScaler #standard scaler worked best
+from sklearn.preprocessing import StandardScaler 
 logging.info(f'scikit-learn {sklearn.__version__}')
 
 
