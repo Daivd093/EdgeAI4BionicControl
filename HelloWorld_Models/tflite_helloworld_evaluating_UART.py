@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
     
 import pickle
 
-V = int(input("¿Cuántas veces quieres correr esto? "))
+V = int(input("¿Cuántas veces quieres enviar N datos via UART? "))
 
 X = []
 Y = []
