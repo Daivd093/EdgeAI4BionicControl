@@ -4,8 +4,9 @@
 # Ignorar archivos .mat
 *.mat
 
-# Ignorar archivos binarios de numpy
+# Ignorar archivos binarios de numpy y pickle
 *.npz
+*.pkl
 
 # Ignorar archivos .h5 de keras y .tflite, si se quiere reproducir los resultados será necesario entrenar de cero
 *.tflite

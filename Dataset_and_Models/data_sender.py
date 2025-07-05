@@ -88,7 +88,7 @@ logging.warning("Esta cosa está funcionando a penas y luego será corregido")
 # Saludo
 respuesta = ser.readline().decode()
 while respuesta:
-    print(respuesta)
+    #print(respuesta)
     respuesta = ser.readline().decode()
     
 # Envía tamaño
@@ -97,7 +97,7 @@ ser.write(f"{N:04}".encode())
 # Espera recibir
 respuesta = ser.readline().decode()
 while respuesta:
-    print(respuesta)
+    #print(respuesta)
     respuesta = ser.readline().decode()
 
 
@@ -116,7 +116,7 @@ for fila in range(L):
         pass
 
     while respuesta:
-        print(respuesta)
+        #print(respuesta)
         respuesta = ser.readline().decode()
     
 

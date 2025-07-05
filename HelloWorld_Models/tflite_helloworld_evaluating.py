@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import load_model
 
-model_file = "sine_model.h5"
+model_file = "sine_model_perfect.h5"
 model = load_model(model_file)
 
 x_input = np.array([[0.0], [1.57], [3.0], [4.0], [3.14]], dtype=np.float32)
@@ -25,7 +25,7 @@ plt.legend()
 plt.show()
 
 mae_model = 1/n_samples * (sum(abs(y_values-predictions)))
-print("Error absoluto medio del modelo float32 local: ", mse_model)
+print("Error absoluto medio del modelo float32 local: ", mae_model)
 
 # Para evaluar
 

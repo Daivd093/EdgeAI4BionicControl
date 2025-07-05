@@ -47,7 +47,7 @@ x_values = np.random.uniform(low=0, high=2*math.pi, size=nsamples)
 #plt.close()
 
 plt.figure()
-y_values = np.sin(x_values)+(0.1*np.random.randn(x_values.shape[0]))
+y_values = np.sin(x_values)#+(0.1*np.random.randn(x_values.shape[0]))
 plt.plot(x_values,y_values,'.')
 plt.title("Gráfico de x_values vs y_values")
 plt.show()
@@ -83,6 +83,7 @@ model.compile(optimizer='rmsprop',loss='mae',metrics=['mae'])
 history = model.fit(x_train,y_train,epochs=500,batch_size=100,validation_data=(x_val,y_val))
 
 model.save("sine_model_perfect.h5")
+#model.save("sine_model.h5")
 
 loss = history.history['loss']
 val_los = history.history['val_loss']
