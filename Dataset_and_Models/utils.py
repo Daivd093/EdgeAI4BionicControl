@@ -20,6 +20,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+import numpy as np
+
 # For input processing
 import scipy
 from scipy import signal as sig
@@ -31,13 +33,11 @@ from scipy.fft import rfft, rfftfreq
 
 # For output processing
 import joblib
-#import sklearn
+import sklearn
 from sklearn.preprocessing import MinMaxScaler
-#import scipy
+
 from scipy.interpolate import CubicSpline
 
-
-import numpy as np
 
 #Preprocess: Filtering 
 
@@ -260,4 +260,5 @@ if __name__ == "__main__":
 
     print(f'Scipy {scipy.__version__}')
     print(f'Numpy {np.__version__}')
+    print(f'Sci-kit Learn {sklearn.__version__}')
 
