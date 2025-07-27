@@ -1,7 +1,3 @@
-TENGO QUE CORREGIR LOS README
-
-
-
 # EdgeAI4BionicControl
 Implementation of tinyML on STMicroelectronics' NUCLEO-L476RG to predict finger positions based on neural signals from Dataset 4 of BCI Competition IV.
 
